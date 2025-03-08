@@ -1,0 +1,64 @@
+package com.oierbravo.mechanical_lemon_lib.foundation.recipe;
+
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.WithConditions;
+import org.apache.commons.lang3.Validate;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public record WithRecipeRequirements<A>(List<IRecipeRequirement> recipeRequirements, A carrier) {
+    public WithRecipeRequirements(A carrier, IRecipeRequirement... recipeRequirements) {
+        this(List.of(recipeRequirements), carrier);
+    }
+
+    public WithRecipeRequirements(A carrier) {
+        this(List.of(), carrier);
+    }
+
+    public WithRecipeRequirements(List<IRecipeRequirement> recipeRequirements, A carrier) {
+        this.recipeRequirements = recipeRequirements;
+        this.carrier = carrier;
+    }
+    public static <A> Builder<A> builder(A carrier) {
+        return (new Builder<A>()).withCarrier(carrier);
+    }
+
+    public List<IRecipeRequirement> recipeRequirements() {
+        return this.recipeRequirements;
+    }
+
+    public A carrier() {
+        return this.carrier;
+    }
+
+    public static class Builder<T> {
+        private final List<IRecipeRequirement> recipeRequirements = new ArrayList<>();
+        private T carrier;
+
+        public Builder() {
+        }
+
+        public WithRecipeRequirements.Builder<T> addRequirement(IRecipeRequirement... recipeRequirement) {
+            this.recipeRequirements.addAll(List.of(recipeRequirement));
+            return this;
+        }
+
+        public WithRecipeRequirements.Builder<T> addRequirement(Collection<IRecipeRequirement> recipeRequirement) {
+            this.recipeRequirements.addAll(recipeRequirement);
+            return this;
+        }
+
+        public WithRecipeRequirements.Builder<T> withCarrier(T carrier) {
+            this.carrier = carrier;
+            return this;
+        }
+
+        public WithRecipeRequirements<T> build() {
+            Validate.notNull(this.carrier, "You need to supply a carrier to create a WithRecipeRequirements", new Object[0]);
+            Validate.notEmpty(this.recipeRequirements, "You need to supply at least one condition to create a WithRecipeRequirements", new Object[0]);
+            return new WithRecipeRequirements<T>(this.recipeRequirements, this.carrier);
+        }
+    }
+}

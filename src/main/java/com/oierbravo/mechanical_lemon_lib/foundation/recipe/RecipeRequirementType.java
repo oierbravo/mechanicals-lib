@@ -1,9 +1,15 @@
 package com.oierbravo.mechanical_lemon_lib.foundation.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.oierbravo.mechanical_lemon_lib.register.MechanicalLemonRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 
+import java.util.function.Function;
+
 public abstract class RecipeRequirementType<RR extends RecipeRequirement> {
+
     private final String id;
 
     public RecipeRequirementType(String id) {
@@ -24,4 +30,5 @@ public abstract class RecipeRequirementType<RR extends RecipeRequirement> {
     public boolean isProcessBlocker(){
         return this instanceof IProcessBlockingRequirement;
     }
+    public abstract MapCodec<RR> codec();
 }
