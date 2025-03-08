@@ -29,7 +29,7 @@ public abstract class BaseRecipeSerializer<R extends BaseRecipe<?,?>, B extends 
 
     }
 
-    @Override
+    /*@Override
     public @NotNull R fromJson(@NotNull ResourceLocation pRecipeId, @NotNull JsonObject pSerializedRecipe) {
         return readFromJson(pRecipeId, pSerializedRecipe)
                 .withRequirements(RecipeRequirementsUtils.fromJson(pSerializedRecipe, enabledRecipeRequirements))
@@ -45,5 +45,5 @@ public abstract class BaseRecipeSerializer<R extends BaseRecipe<?,?>, B extends 
     @Override
     public void toNetwork(@NotNull FriendlyByteBuf pBuffer, @NotNull R pRecipe) {
         writeToBuffer(pBuffer, pRecipe);
-    }
+    }*/
 }

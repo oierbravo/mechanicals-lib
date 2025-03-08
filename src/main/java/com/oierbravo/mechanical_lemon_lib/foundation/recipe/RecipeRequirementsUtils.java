@@ -1,7 +1,6 @@
 package com.oierbravo.mechanical_lemon_lib.foundation.recipe;
 
 import com.google.gson.JsonObject;
-import com.oierbravo.mechanical_lemon_lib.utility.Components;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.entity.BlockEntity;

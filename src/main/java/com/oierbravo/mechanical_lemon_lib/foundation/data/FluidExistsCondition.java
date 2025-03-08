@@ -1,65 +1,41 @@
 package com.oierbravo.mechanical_lemon_lib.foundation.data;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tterrag.registrate.util.entry.FluidEntry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
-public class FluidExistsCondition implements ICondition {
-    private static final ResourceLocation NAME = new ResourceLocation("create_mechanical_chicken", "fluid_exists");
-    private final ResourceLocation fluid;
+public record FluidExistsCondition(String fluid) implements ICondition {
+    public static MapCodec<FluidExistsCondition> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(Codec.STRING.fieldOf("fluid_exists").forGetter(FluidExistsCondition::fluid)).apply(builder, FluidExistsCondition::new));
 
-    public FluidExistsCondition(String location) {
-        this(new ResourceLocation(location));
+    public FluidExistsCondition(String fluid) {
+        this.fluid = fluid;
     }
 
-    public FluidExistsCondition(String namespace, String path) {
-        this(new ResourceLocation(namespace, path));
-    }
-
-    public FluidExistsCondition(ResourceLocation pFluid) {
-        this.fluid = pFluid;
-    }
-
-    public FluidExistsCondition(FluidEntry<ForgeFlowingFluid.Flowing> fluid) {
-        this(fluid.getId());
-    }
-
-
-    @Override
-    public ResourceLocation getID() {
-        return NAME;
-    }
     public String toString() {
         return "fluid_exists(\"" + this.fluid + "\")";
     }
 
     public boolean test(IContext context) {
-        if(fluid.getNamespace().startsWith("#"))
+        ResourceLocation fluidLocation = ResourceLocation.tryParse(fluid);
+        if(fluidLocation == null)
+            return false;
+        if(fluidLocation.getNamespace().startsWith("#"))
             return true; //Tags always true;
-        return ForgeRegistries.FLUIDS.containsKey(this.fluid);
+        return BuiltInRegistries.FLUID.containsKey(fluidLocation);
     }
-    public static class Serializer implements IConditionSerializer<FluidExistsCondition> {
-        public static final Serializer INSTANCE = new Serializer();
 
-        public Serializer() {
-        }
-
-        public void write(JsonObject json, FluidExistsCondition value) {
-            json.addProperty("fluid", value.fluid.toString());
-        }
-
-        public FluidExistsCondition read(JsonObject json) {
-            return new FluidExistsCondition(new ResourceLocation(GsonHelper.getAsString(json, "fluid")));
-        }
-
-        public ResourceLocation getID() {
-            return FluidExistsCondition.NAME;
-        }
-
+    @Override
+    public MapCodec<? extends ICondition> codec() {
+        return CODEC;
     }
+
+
 }

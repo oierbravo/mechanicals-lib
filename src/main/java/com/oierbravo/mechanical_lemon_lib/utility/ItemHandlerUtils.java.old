@@ -1,0 +1,41 @@
+package com.oierbravo.mechanical_lemon_lib.utility;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
+
+public class ItemHandlerUtils {
+    public static boolean tryToPushBottom(Level pLevel, BlockPos pBlockPos, ItemStackHandler outputItems, boolean simulate){
+        ItemStack outputItemStack = outputItems.extractItem(0,64,true);
+        if(outputItemStack.isEmpty())
+            return false;
+
+        Optional<IItemHandler> belowItemHandler = getItemHandler(pLevel, pBlockPos.below());
+        if(belowItemHandler.isEmpty())
+            return false;
+
+        if(simulate)
+            return true;
+
+        ItemStack remainderItemStack = ItemHandlerHelper.insertItem(belowItemHandler.get(), outputItemStack, true);
+        outputItems.setStackInSlot(0,remainderItemStack);
+        ItemHandlerHelper.insertItem(belowItemHandler.get(), outputItemStack, false);
+        return true;
+    }
+    public static  Optional<IItemHandler> getItemHandler(Level pLevel, BlockPos pBlockPos){
+        if(pLevel != null && pLevel.isClientSide())
+            return Optional.empty();
+        BlockEntity blockEntity = pLevel.getBlockEntity(pBlockPos);
+        if(blockEntity == null)
+            return Optional.empty();
+
+        @NotNull LazyOptional<IItemHandler> inventoryHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER);
+        if(!inventoryHandler.isPresent())
+            return Optional.empty();
+        return  blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve();
+    }
+}

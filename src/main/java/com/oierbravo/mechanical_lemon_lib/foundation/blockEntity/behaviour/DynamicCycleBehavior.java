@@ -3,13 +3,14 @@ package com.oierbravo.mechanical_lemon_lib.foundation.blockEntity.behaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 public class DynamicCycleBehavior extends BlockEntityBehaviour {
 
-    public static final BehaviourType<DynamicCycleBehavior> TYPE = new BehaviourType<>();
+	public static final BehaviourType<DynamicCycleBehavior> TYPE = new BehaviourType<>();
 	public DynamicCycleBehaviorSpecifics specifics;
 	private int prevRunningTicks;
 	private int runningTicks;
@@ -25,6 +26,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 		int getProcessingTime();
 		boolean tryProcess(boolean simulate);
 		void playSound();
+		void setWorking(boolean value);
 	}
 
 	public <T extends SmartBlockEntity & DynamicCycleBehaviorSpecifics> DynamicCycleBehavior(T te) {
@@ -35,33 +37,36 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	}
 
 	@Override
-	public void read(CompoundTag compound, boolean clientPacket) {
+	public void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
 		currentTime = compound.getInt("CurrentTime");
 		processingTime = compound.getInt("ProcessingTime");
 		running = compound.getBoolean("Running");
 		finished = compound.getBoolean("Finished");
-		super.read(compound, clientPacket);
+		super.read(compound, registries, clientPacket);
 	}
 
 	@Override
-	public void write(CompoundTag compound, boolean clientPacket) {
+	public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
 		compound.putInt("CurrentTime", currentTime);
 		compound.putInt("ProcessingTime", processingTime);
 		compound.putBoolean("Running", running);
 		compound.putBoolean("Finished", finished);
-		super.write(compound, clientPacket);
+		super.write(compound, registries, clientPacket);
 	}
 
 	public void start() {
 		running = true;
 		currentTime = 0;
 		processingTime = specifics.getProcessingTime();
+		specifics.setWorking(true);
 		blockEntity.sendData();
 	}
 	public void stop(){
 		running = false;
 		currentTime = 0;
 		processingTime = 0;
+		specifics.setWorking(false);
+		blockEntity.sendData();
 	}
 
 	@Override
@@ -85,8 +90,16 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 			}
 			return;
 		}
-		if(running)
-			currentTime += getRunningTickSpeed();
+		if(!specifics.tryProcess(true)){
+			running = false;
+			blockEntity.sendData();
+			return;
+		}
+
+
+		specifics.setWorking(true);
+		running = true;
+		currentTime += getRunningTickSpeed();
 
 		if (currentTime >= getProccessingTime() && specifics.getKineticSpeed() != 0) {
 			specifics.playSound();
@@ -94,9 +107,10 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 				stop();
 				apply();
 				specifics.onCycleCompleted();
-				blockEntity.sendData();
+
 			}
 		}
+		blockEntity.sendData();
 	}
 
 	public float getProgress(float partialTicks){
@@ -104,7 +118,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 		float ticks = Mth.lerp(partialTicks, prevRunningTicks, runningTicks);
 		return ticks/ getProccessingTime() * 100;
 	}
-	protected int getProccessingTime(){
+	public int getProccessingTime(){
 		return processingTime;
 	}
 
@@ -128,5 +142,15 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 		if(!running)
 			return 0;
 		return Mth.clamp(currentTime * 100 / (getProccessingTime()), 0,100);
+	}
+	public int getCurrentTime(){
+		return currentTime;
+	}
+
+	public boolean isRunning(){
+		return running;
+	}
+	public boolean isFinished(){
+		return finished;
 	}
 }

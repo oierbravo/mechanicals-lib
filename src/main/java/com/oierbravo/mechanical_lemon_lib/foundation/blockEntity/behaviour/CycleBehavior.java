@@ -3,6 +3,7 @@ package com.oierbravo.mechanical_lemon_lib.foundation.blockEntity.behaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -37,19 +38,19 @@ public class CycleBehavior extends BlockEntityBehaviour {
 	}
 
 	@Override
-	public void read(CompoundTag compound, boolean clientPacket) {
+	public void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
 		running = compound.getBoolean("Running");
 		finished = compound.getBoolean("Finished");
 		prevRunningTicks = runningTicks = compound.getInt("Ticks");
-		super.read(compound, clientPacket);
+		super.read(compound,registries, clientPacket);
 	}
 
 	@Override
-	public void write(CompoundTag compound, boolean clientPacket) {
+	public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
 		compound.putBoolean("Running", running);
 		compound.putBoolean("Finished", finished);
 		compound.putInt("Ticks", runningTicks);
-		super.write(compound, clientPacket);
+		super.write(compound, registries, clientPacket);
 	}
 
 	public void start() {

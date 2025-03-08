@@ -1,6 +1,8 @@
 package com.oierbravo.mechanical_lemon_lib.utility;
 
 import com.oierbravo.mechanical_lemon_lib.MechanicalLemonLib;
+import net.createmod.catnip.lang.Lang;
+import net.createmod.catnip.lang.LangBuilder;
 
 public class LibLang extends Lang {
     public LibLang() {

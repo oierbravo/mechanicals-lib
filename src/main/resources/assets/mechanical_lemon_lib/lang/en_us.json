@@ -1,8 +1,8 @@
 {
-  "mechanical_lemon_lib.progress": "Progress: %d%%",
-  "mechanical_lemon_tab": "Mechanicals",
+  "mechanical_lemon_lib.ui.progress": "Progress: %d%%",
+  "itemGroup.mechanical_lemon_lib": "Mechanicals",
   "mechanical_lemon_lib.ui.recipe_requirement.none.tooltip": "No specific requirement",
-  "mechanical_lemon_lib.ui.recipe_requirement.biome.tooltip": "Requires %s biome",
+  "mechanical_lemon_lib.ui.recipe_requirement.biome.tooltip": "Biome: %s",
   "mechanical_lemon_lib.ui.recipe_requirement.min_height.tooltip": "Min Y: %s",
   "mechanical_lemon_lib.ui.recipe_requirement.max_height.tooltip": "Max Y: %s",
   "mechanical_lemon_lib.ui.recipe_requirement.min_speed.tooltip": "Min Speed: %s",

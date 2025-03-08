@@ -1,13 +1,9 @@
 package com.oierbravo.mechanical_lemon_lib.foundation.recipe;
 
-import com.google.gson.JsonObject;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.RecipeInput;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
@@ -16,7 +12,7 @@ import java.util.Map;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class BaseRecipe<T extends Container, P extends BaseRecipeParams> implements Recipe<T>, IRecipeWithRequirements {
+public abstract class BaseRecipe<T extends RecipeInput, P extends BaseRecipeParams> implements Recipe<T>, IRecipeWithRequirements {
 
     protected ResourceLocation id;
 
@@ -40,11 +36,6 @@ public abstract class BaseRecipe<T extends Container, P extends BaseRecipeParams
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return true;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
 }

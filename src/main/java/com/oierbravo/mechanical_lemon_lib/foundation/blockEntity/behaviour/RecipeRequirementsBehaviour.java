@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -100,11 +101,8 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
         return added;
     }
 
-
-
-        @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
-
+    @Override
+    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         ListTag missingRequirementsTag = new ListTag();
         for(String missingId : missingRequirements){
             CompoundTag tag = new CompoundTag();
@@ -112,19 +110,18 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
             missingRequirementsTag.add(tag);
         }
         compound.put("MissingRequirements", missingRequirementsTag);
-        super.write(compound, clientPacket);
+        super.write(compound, registries, clientPacket);
     }
 
     @Override
-    public void read(CompoundTag compound, boolean clientPacket){
-
+    public void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         missingRequirements = new ArrayList<>();
         ListTag missingRequirementsTag = compound.getList("MissingRequirements", Tag.TAG_COMPOUND);
         for( Tag tag : missingRequirementsTag ){
             CompoundTag requirementsTag = (CompoundTag) tag;
             missingRequirements.add(requirementsTag.getString("t"));
         }
-        super.read(compound, clientPacket);
+        super.read(compound, registries, clientPacket);
     }
 
     public interface RecipeRequirementsSpecifics<R extends IRecipeWithRequirements> {
