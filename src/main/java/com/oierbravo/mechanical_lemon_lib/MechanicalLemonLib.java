@@ -2,6 +2,7 @@ package com.oierbravo.mechanical_lemon_lib;
 
 import com.mojang.logging.LogUtils;
 import com.oierbravo.mechanical_lemon_lib.register.LemonCreativeModeTabs;
+import com.oierbravo.mechanical_lemon_lib.register.MechanicalLemonRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -18,7 +19,7 @@ public class MechanicalLemonLib {
     public MechanicalLemonLib(IEventBus modEventBus, ModContainer modContainer) {
 
         LemonCreativeModeTabs.register(modEventBus);
-        //MechanicalLemonRegistries.init();
+        MechanicalLemonRegistries.init();
         //modEventBus.addListener(MechanicalLemonRegistries::init);
 
     }

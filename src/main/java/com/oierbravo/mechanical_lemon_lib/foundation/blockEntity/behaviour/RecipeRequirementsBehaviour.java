@@ -76,7 +76,7 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
     }
     private boolean checkRequirements(R pRecipe, Level pLevel, RecipeRequirementsSpecifics<R> pSpecifics){
         boolean result = true;
-        for (Map.Entry<RecipeRequirementType<?>, RecipeRequirement> entry : pRecipe.getRecipeRequirements().entrySet()) {
+        for (Map.Entry<RecipeRequirementType, RecipeRequirement<?>> entry : pRecipe.getRecipeRequirements().entrySet()) {
             if(!checkRequirement(entry.getValue(), pLevel, (BlockEntity) pSpecifics)){
                 missingRequirements.add(entry.getKey().getId());
                 result = false;

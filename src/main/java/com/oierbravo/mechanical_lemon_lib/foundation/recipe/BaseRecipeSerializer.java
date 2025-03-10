@@ -17,36 +17,4 @@ public abstract class BaseRecipeSerializer<R extends BaseRecipe<?,?>, B extends 
     public BaseRecipeSerializer(List<RecipeRequirementType<?>> pEnabledRecipeRequirements) {
         this.enabledRecipeRequirements = pEnabledRecipeRequirements;
     }
-
-    protected abstract B readFromJson(ResourceLocation recipeId, JsonObject json);
-    protected abstract B readFromBuffer(ResourceLocation recipeId, FriendlyByteBuf buffer);
-
-    protected abstract void writeToJson(JsonObject json, R recipe);
-    protected abstract void writeToBuffer(FriendlyByteBuf buffer, R recipe);
-
-
-    public final void write(JsonObject json, R recipe) {
-        writeToJson(json, recipe);
-
-    }
-
-    //public abstract @NotNull MapCodec<R> codec();
-
-    /*@Override
-    public @NotNull R fromJson(@NotNull ResourceLocation pRecipeId, @NotNull JsonObject pSerializedRecipe) {
-        return readFromJson(pRecipeId, pSerializedRecipe)
-                .withRequirements(RecipeRequirementsUtils.fromJson(pSerializedRecipe, enabledRecipeRequirements))
-                .build();
-    }
-
-
-    @Override
-    public @Nullable R fromNetwork(@NotNull ResourceLocation pRecipeId, @NotNull FriendlyByteBuf pBuffer) {
-        return readFromBuffer(pRecipeId, pBuffer).build();
-    }
-
-    @Override
-    public void toNetwork(@NotNull FriendlyByteBuf pBuffer, @NotNull R pRecipe) {
-        writeToBuffer(pBuffer, pRecipe);
-    }*/
 }

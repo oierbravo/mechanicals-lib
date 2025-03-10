@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class BaseRecipeParams implements IBaseRecipeParams {
     public ResourceLocation id;
-    public ArrayList<RecipeRequirement> recipeRequirements;
+    public ArrayList<RecipeRequirement<?>> recipeRequirements;
     protected List<ICondition> conditions;
 
     protected BaseRecipeParams(ResourceLocation id) {

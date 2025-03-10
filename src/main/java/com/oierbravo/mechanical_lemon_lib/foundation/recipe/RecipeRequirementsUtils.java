@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RecipeRequirementsUtils {
-    public static ArrayList<RecipeRequirement>  fromJson(JsonObject json, List<RecipeRequirementType<?>> enabledRecipeRequirements){
+    /*public static ArrayList<RecipeRequirement<?>>  fromJson(JsonObject json, List<RecipeRequirementType<?>> enabledRecipeRequirements){
         ArrayList<RecipeRequirement> recipeRequirements = new ArrayList<>();
 
         enabledRecipeRequirements.forEach(recipeRequirementType -> {
@@ -19,9 +19,9 @@ public class RecipeRequirementsUtils {
             }
         });
         return recipeRequirements;
-    }
-    public static ArrayList<RecipeRequirement> fromBuffer(FriendlyByteBuf buffer,  List<RecipeRequirementType<?>> enabledRecipeRequirements){
-        ArrayList<RecipeRequirement> recipeRequirements = new ArrayList<>();
+    }*/
+    public static ArrayList<RecipeRequirement<?>> fromBuffer(FriendlyByteBuf buffer,  List<RecipeRequirementType<?>> enabledRecipeRequirements){
+        ArrayList<RecipeRequirement<?>> recipeRequirements = new ArrayList<>();
         enabledRecipeRequirements.forEach(recipeRequirementType -> {
             recipeRequirements.add(recipeRequirementType.fromNetwork(buffer));
         });
@@ -29,21 +29,21 @@ public class RecipeRequirementsUtils {
         return recipeRequirements;
     }
 
-    public static JsonObject toJson(JsonObject pJson, Map<RecipeRequirementType<?>, RecipeRequirement> pRecipeRequirements){
+    /*public static JsonObject toJson(JsonObject pJson, Map<RecipeRequirementType<?>, RecipeRequirement> pRecipeRequirements){
         for (Map.Entry<RecipeRequirementType<?>, RecipeRequirement> entry : pRecipeRequirements.entrySet()) {
             pJson = entry.getKey().toJson(pJson, entry.getValue());
         }
         return pJson;
     }
+*/
 
-
-    public static void toBuffer(FriendlyByteBuf buffer, IRecipeWithRequirements pRecipe){
+    public static <RRT extends RecipeRequirementType<?>> void toBuffer(FriendlyByteBuf buffer, IRecipeWithRequirements pRecipe){
         pRecipe.getEnabledRequirements().forEach(recipeRequirementType -> {
             recipeRequirementType.toNetwork(buffer,pRecipe.getRequirement(recipeRequirementType));
         });
     }
 
-    public static ArrayList<String> checkRequirements(Map<RecipeRequirementType<?>, RecipeRequirement> pRecipeRequirements, BlockEntity pBlockEntity){
+    public static ArrayList<String> checkRequirements(Map<RecipeRequirementType<?>, RecipeRequirement<?>> pRecipeRequirements, BlockEntity pBlockEntity){
         ArrayList<String> missingRequirements = new ArrayList<>();
         pRecipeRequirements.forEach((recipeRequirementType, recipeRequirement) -> {
             if(!recipeRequirement.test(pBlockEntity.getLevel(),pBlockEntity))

@@ -1,34 +1,32 @@
 package com.oierbravo.mechanical_lemon_lib.foundation.recipe;
 
-import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import com.oierbravo.mechanical_lemon_lib.register.MechanicalLemonRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
-import java.util.function.Function;
-
-public abstract class RecipeRequirementType<RR extends RecipeRequirement> {
+public abstract class RecipeRequirementType<RR extends RecipeRequirement<?>> {
 
     private final String id;
-
     public RecipeRequirementType(String id) {
         this.id = id;
     }
-
     public String getId() {
         return id;
     }
 
-    public abstract RR fromJson(JsonObject pJson);
-
-    public abstract JsonObject toJson(JsonObject pJson, RecipeRequirement pRecipeRequirement);
-
+    public abstract void toNetwork(FriendlyByteBuf buffer, RecipeRequirement<?> recipeRequirement);
     public abstract RR fromNetwork(FriendlyByteBuf buffer);
 
-    public abstract void toNetwork(FriendlyByteBuf buffer, RecipeRequirement pRecipeRequirement);
-    public boolean isProcessBlocker(){
-        return this instanceof IProcessBlockingRequirement;
+    public MapCodec<RR> codec(IRecipeRequirementType t) {
+        return RR.typeCodec(this);
     }
-    public abstract MapCodec<RR> codec();
+
+    public StreamCodec<RegistryFriendlyByteBuf, RR> streamCodec(){
+        return StreamCodec.of(this::toNetwork, this::fromNetwork);
+    };
+
+    public String toString() {
+        return getId();
+    }
 }

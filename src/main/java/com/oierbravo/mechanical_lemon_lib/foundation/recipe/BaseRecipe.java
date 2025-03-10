@@ -7,12 +7,8 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.neoforged.neoforge.common.conditions.ICondition;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.text.html.Option;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -20,12 +16,11 @@ public abstract class BaseRecipe<T extends RecipeInput, P extends BaseRecipePara
 
     protected ResourceLocation id;
 
-    protected HashMap<RecipeRequirementType<?>, RecipeRequirement> recipeRequirements = new HashMap<>();
-
-    protected static List<RecipeRequirementType<?>> enabledRecipeRequirements = List.of();
+    protected HashMap<RecipeRequirementType<?>, RecipeRequirement<?>> recipeRequirements = new HashMap<>();
 
     protected List<ICondition> conditions;
 
+    abstract public List<RecipeRequirementType<?>> getEnabledRequirements();
 
     public BaseRecipe(P params){
         this.id = params.id;
@@ -35,13 +30,7 @@ public abstract class BaseRecipe<T extends RecipeInput, P extends BaseRecipePara
         );
         this.conditions = params.conditions;
     }
-    public List<RecipeRequirementType<?>> getEnabledRequirements() {
-        return enabledRecipeRequirements;
-    }
 
-    public Map<RecipeRequirementType<?>, RecipeRequirement> getRecipeRequirements(){
-        return recipeRequirements;
-    }
     public List<ICondition> getConditions(){
         return conditions;
     }
