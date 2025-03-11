@@ -1,32 +1,23 @@
 package com.oierbravo.mechanical_lemon_lib.foundation.recipe;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
-public abstract class RecipeRequirementType<RR extends RecipeRequirement<?>> {
+public class RecipeRequirementType<RR extends IRecipeRequirement> {
+    private final MapCodec<RR> codec;
+    private final StreamCodec<RegistryFriendlyByteBuf,RR> streamCodec;
 
-    private final String id;
-    public RecipeRequirementType(String id) {
-        this.id = id;
-    }
-    public String getId() {
-        return id;
-    }
-
-    public abstract void toNetwork(FriendlyByteBuf buffer, RecipeRequirement<?> recipeRequirement);
-    public abstract RR fromNetwork(FriendlyByteBuf buffer);
-
-    public MapCodec<RR> codec(IRecipeRequirementType t) {
-        return RR.typeCodec(this);
+    public RecipeRequirementType(MapCodec<RR> codec, StreamCodec<RegistryFriendlyByteBuf, RR> streamCodec) {
+        this.codec = codec;
+        this.streamCodec = streamCodec;
     }
 
-    public StreamCodec<RegistryFriendlyByteBuf, RR> streamCodec(){
-        return StreamCodec.of(this::toNetwork, this::fromNetwork);
-    };
+    public MapCodec<RR> codec() {
+        return codec;
+    }
 
-    public String toString() {
-        return getId();
+    public StreamCodec<RegistryFriendlyByteBuf, RR> streamCodec() {
+        return streamCodec;
     }
 }

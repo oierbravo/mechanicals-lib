@@ -12,16 +12,21 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public record SpeedRequirement(Float speed) implements IRecipeRequirement {
-    public static String ID = "min_speed";
-    public static MapCodec<SpeedRequirement> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(Codec.FLOAT.optionalFieldOf("value", null).forGetter(SpeedRequirement::speed)).apply(builder,SpeedRequirement::new));
+public record MinYRequirement(Integer minY) implements IRecipeRequirement{
+    public static String ID = "min_y";
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SpeedRequirement> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.FLOAT, SpeedRequirement::speed,
-            SpeedRequirement::new
+    public static MapCodec<MinYRequirement> CODEC = RecordCodecBuilder
+            .mapCodec((builder)
+                    -> builder
+                    .group(Codec.INT.optionalFieldOf("value", null)
+                    .forGetter(MinYRequirement::minY)).apply(builder,MinYRequirement::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, MinYRequirement> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, MinYRequirement::minY,
+            MinYRequirement::new
     );
-    public static SpeedRequirement of(Float speed){
-        return new SpeedRequirement(speed);
+    public static MinYRequirement of(Integer minY){
+        return new MinYRequirement(minY);
     }
 
     @Override
@@ -36,7 +41,7 @@ public record SpeedRequirement(Float speed) implements IRecipeRequirement {
 
     @Override
     public RecipeRequirementType<?> getType() {
-        return MechanicalLemonRecipeRequirementTypes.SPEED.get();
+        return MechanicalLemonRecipeRequirementTypes.MIN_Y.get();
     }
 
     @Override

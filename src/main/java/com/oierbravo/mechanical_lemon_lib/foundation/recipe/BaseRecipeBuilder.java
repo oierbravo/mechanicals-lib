@@ -2,7 +2,11 @@ package com.oierbravo.mechanical_lemon_lib.foundation.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -20,10 +24,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public abstract class BaseRecipeBuilder<R extends BaseRecipe<?,P>, P extends BaseRecipeParams> {
+    protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     protected P params;
-    protected List<RecipeRequirement> recipeRequirements;
-    protected List<ICondition> recipeConditions;
+    protected ArrayList<IRecipeRequirement> recipeRequirements;
+    protected ArrayList<ICondition> recipeConditions;
 
     public BaseRecipeBuilder( ResourceLocation id){
         recipeRequirements = new ArrayList<>();
@@ -36,13 +41,15 @@ public abstract class BaseRecipeBuilder<R extends BaseRecipe<?,P>, P extends Bas
         consumer.accept(new DataGenResult<>(build(), recipeConditions));
     }
 
-    public BaseRecipeBuilder<R,P> withRequirement(RecipeRequirement requirement){
+    public <BRP extends BaseRecipeBuilder<?,?>> BRP withRequirement(IRecipeRequirement requirement){
+    //public <BRP extends BaseRecipeSerializer<?,?> BaseRecipeBuilder<R,P> withRequirement(IRecipeRequirement requirement){
         params.recipeRequirements.add(requirement);
-        return this;
+        return (BRP) this;
     }
-    public BaseRecipeBuilder<R,P> withRequirements(List<RecipeRequirement> recipeRequirements) {
-        recipeRequirements.forEach(this::withRequirement);
-        return this;
+    public <BRP extends BaseRecipeBuilder<?,?>> BRP withRequirements(List<IRecipeRequirement> pRecipeRequirements) {
+    //public BaseRecipeBuilder<R,P> withRequirements(List<IRecipeRequirement> pRecipeRequirements) {
+        params.recipeRequirements.addAll(pRecipeRequirements);
+        return (BRP) this;
     }
 
     public BaseRecipeBuilder<R,P> whenModLoaded(String modid) {
@@ -55,7 +62,20 @@ public abstract class BaseRecipeBuilder<R extends BaseRecipe<?,P>, P extends Bas
 
     public BaseRecipeBuilder<R,P> withCondition(ICondition condition) {
         recipeConditions.add(condition);
-        return this;
+        return  this;
+    }
+    public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
+        Advancement.Builder advancement = recipeOutput.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(resourceLocation))
+                .rewards(AdvancementRewards.Builder.recipe(resourceLocation))
+                .requirements(AdvancementRequirements.Strategy.OR);
+        this.criteria.forEach(advancement::addCriterion);
+
+        recipeOutput.accept(resourceLocation, build(), advancement.build(params.id.withPrefix("recipes/")));
+    }
+
+    public void save(RecipeOutput recipeOutput) {
+        save(recipeOutput, params.id);
     }
 
     public static class DataGenResult<S extends BaseRecipe<?,?>> implements RecipeBuilder {

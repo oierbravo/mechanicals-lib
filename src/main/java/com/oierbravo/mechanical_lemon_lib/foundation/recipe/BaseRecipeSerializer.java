@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public abstract class BaseRecipeSerializer<R extends BaseRecipe<?,?>, B extends BaseRecipeBuilder<R,?>> implements RecipeSerializer<R> {
-    protected final List<RecipeRequirementType<?>> enabledRecipeRequirements;
+    protected final List<String> enabledRecipeRequirements;
 
-    public BaseRecipeSerializer(List<RecipeRequirementType<?>> pEnabledRecipeRequirements) {
+    public BaseRecipeSerializer(List<String> pEnabledRecipeRequirements) {
         this.enabledRecipeRequirements = pEnabledRecipeRequirements;
     }
 }

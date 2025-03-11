@@ -1,7 +1,7 @@
 package com.oierbravo.mechanical_lemon_lib.foundation.blockEntity.behaviour;
 
+import com.oierbravo.mechanical_lemon_lib.foundation.recipe.IRecipeRequirement;
 import com.oierbravo.mechanical_lemon_lib.foundation.recipe.IRecipeWithRequirements;
-import com.oierbravo.mechanical_lemon_lib.foundation.recipe.RecipeRequirement;
 import com.oierbravo.mechanical_lemon_lib.foundation.recipe.RecipeRequirementType;
 import com.oierbravo.mechanical_lemon_lib.utility.LibLang;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -76,19 +76,23 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
     }
     private boolean checkRequirements(R pRecipe, Level pLevel, RecipeRequirementsSpecifics<R> pSpecifics){
         boolean result = true;
-        for (Map.Entry<RecipeRequirementType, RecipeRequirement<?>> entry : pRecipe.getRecipeRequirements().entrySet()) {
+        for( IRecipeRequirement requirement : pRecipe.getRecipeRequirements()){
+            if(!checkRequirement(requirement, pLevel, (BlockEntity) pSpecifics)){
+                missingRequirements.add(requirement.getType().toString());
+                result = false;
+            }
+        }
+        /*for (Map.Entry<RecipeRequirementType<?>, IRecipeRequirement> entry : pRecipe.getRecipeRequirements().entrySet()) {
             if(!checkRequirement(entry.getValue(), pLevel, (BlockEntity) pSpecifics)){
-                missingRequirements.add(entry.getKey().getId());
+                missingRequirements.add(entry.toString());
                 result = false;
             }
 
-        }
+        }*/
         return result;
     }
-    private boolean checkRequirement(RecipeRequirement value, Level pLevel, BlockEntity pSpecifics){
-        if(value.test(pLevel, pSpecifics))
-            return true;
-        return false;
+    private boolean checkRequirement(IRecipeRequirement value, Level pLevel, BlockEntity pSpecifics){
+        return value.test(pLevel, pSpecifics);
     }
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking, boolean added) {
         if(missingRequirements.isEmpty())

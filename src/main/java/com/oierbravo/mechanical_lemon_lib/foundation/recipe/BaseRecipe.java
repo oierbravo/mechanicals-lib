@@ -7,6 +7,7 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.neoforged.neoforge.common.conditions.ICondition;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,18 +17,16 @@ public abstract class BaseRecipe<T extends RecipeInput, P extends BaseRecipePara
 
     protected ResourceLocation id;
 
-    protected HashMap<RecipeRequirementType<?>, RecipeRequirement<?>> recipeRequirements = new HashMap<>();
+    protected ArrayList<IRecipeRequirement> recipeRequirements;
 
-    protected List<ICondition> conditions;
+    protected ArrayList<ICondition> conditions;
 
-    abstract public List<RecipeRequirementType<?>> getEnabledRequirements();
+    abstract public List<String> getEnabledRequirements();
 
     public BaseRecipe(P params){
         this.id = params.id;
-
-        params.recipeRequirements.forEach(
-                recipeRequirement -> recipeRequirements.put(recipeRequirement.getType(), recipeRequirement)
-        );
+        recipeRequirements = params.recipeRequirements;
+        //recipeRequirements.putAll(params.recipeRequirements);
         this.conditions = params.conditions;
     }
 
