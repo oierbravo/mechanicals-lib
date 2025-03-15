@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 public class CycleBehavior extends BlockEntityBehaviour {
 
-	private final int cycleTime;
+	private int cycleTime;
 	private boolean actuateHalfcycle;
 	public static final BehaviourType<CycleBehavior> TYPE = new BehaviourType<>();
 	public CycleBehaviourSpecifics specifics;
@@ -24,19 +24,21 @@ public class CycleBehavior extends BlockEntityBehaviour {
 
 	public interface CycleBehaviourSpecifics {
 
-		public void onCycleCompleted();
-		public void onOperationCompletd();
-		public float getKineticSpeed();
-		public boolean tryProcess(boolean simulate);
-		public void playSound();
+		void onCycleCompleted();
+		void onOperationCompletd();
+		float getKineticSpeed();
+		boolean tryProcess(boolean simulate);
+		void playSound();
+
+		int getCycles();
 	}
 
-	public <T extends SmartBlockEntity & CycleBehaviourSpecifics> CycleBehavior(T te, int pCycle, boolean pActuateHalfCycle, int pNumCycles) {
+	public <T extends SmartBlockEntity & CycleBehaviourSpecifics> CycleBehavior(T te, int pCycle, boolean pActuateHalfCycle) {
 		super(te);
 		this.specifics = te;
 		cycleTime = pCycle;
 		actuateHalfcycle = pActuateHalfCycle;
-		numCycles = pNumCycles;
+		numCycles = 0;
 		cycleDivider = (actuateHalfcycle) ? 2 : 1;
 		currentCycle = 0;
 	}
@@ -47,6 +49,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		finished = compound.getBoolean("Finished");
 		prevRunningTicks = runningTicks = compound.getInt("Ticks");
 		currentCycle = compound.getInt("CurrentCycle");
+		cycleTime = compound.getInt("CycleTime");
+		numCycles = compound.getInt("NumCycles");
 		super.read(compound,registries, clientPacket);
 	}
 
@@ -56,6 +60,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		compound.putBoolean("Finished", finished);
 		compound.putInt("Ticks", runningTicks);
 		compound.putInt("CurrentCycle", currentCycle);
+		compound.putInt("CycleTime", cycleTime);
+		compound.putInt("NumCycles", numCycles);
 		super.write(compound, registries, clientPacket);
 	}
 
@@ -64,7 +70,9 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		prevRunningTicks = 0;
 		runningTicks = 0;
 		currentCycle = 0;
+		numCycles = specifics.getCycles();
 		blockEntity.sendData();
+
 	}
 
 	@Override
@@ -102,7 +110,7 @@ public class CycleBehavior extends BlockEntityBehaviour {
 				blockEntity.sendData();
 		}
 
-		if (!level.isClientSide && runningTicks > cycleTime / cycleDivider) {
+		if (!level.isClientSide && runningTicks > cycleTime) {
 			specifics.onCycleCompleted();
 			currentCycle++;
 			if(currentCycle == numCycles){
@@ -152,7 +160,23 @@ public class CycleBehavior extends BlockEntityBehaviour {
 	public boolean isRunning(){
 		return running;
 	}
-	public int getProgressPercent() {
+	public int getTotalProgressPercent() {
+		return Mth.clamp(runningTicks * 100 / (cycleTime /cycleDivider) * numCycles, 0,100);
+	}
+	public int getCycleProgressPercent() {
 		return Mth.clamp(runningTicks * 100 / (cycleTime /cycleDivider), 0,100);
+	}
+	public int getCycleTime(){
+		return cycleTime;
+	}
+	public int getCurrentCycle(){
+		return currentCycle;
+	}
+
+	public int getPrevRunningTicks() {
+		return prevRunningTicks;
+	}
+	public int getRunningTicks() {
+		return runningTicks;
 	}
 }

@@ -1,7 +1,6 @@
 package com.oierbravo.mechanical_lemon_lib.register;
 
 import com.oierbravo.mechanical_lemon_lib.MechanicalLemonLib;
-import com.oierbravo.mechanical_lemon_lib.foundation.recipe.IRecipeRequirement;
 import com.oierbravo.mechanical_lemon_lib.foundation.recipe.RecipeRequirementType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -10,6 +9,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 
 public class MechanicalLemonRegistries {
     public static Registry<RecipeRequirementType<?>> RECIPE_REQUIREMENT_TYPE;// = (new RegistryBuilder(Keys.RECIPE_REQUIREMENT_TYPES)).create();
+
     public MechanicalLemonRegistries() {
     }
 

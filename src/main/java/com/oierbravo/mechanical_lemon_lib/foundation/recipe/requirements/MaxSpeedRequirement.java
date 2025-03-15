@@ -6,47 +6,41 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.oierbravo.mechanical_lemon_lib.foundation.recipe.IRecipeRequirement;
 import com.oierbravo.mechanical_lemon_lib.foundation.recipe.RecipeRequirementType;
 import com.oierbravo.mechanical_lemon_lib.register.MechanicalLemonRecipeRequirementTypes;
-import net.minecraft.core.BlockPos;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public record MinYRequirement(Integer minY) implements IRecipeRequirement {
-    public static String ID = "min_y";
+public record MaxSpeedRequirement(Float speed) implements IRecipeRequirement {
+    public static String ID = "max_speed";
+    public static MapCodec<MaxSpeedRequirement> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(Codec.FLOAT.optionalFieldOf("value", null).forGetter(MaxSpeedRequirement::speed)).apply(builder, MaxSpeedRequirement::new));
 
-    public static MapCodec<MinYRequirement> CODEC = RecordCodecBuilder
-            .mapCodec((builder)
-                    -> builder
-                    .group(Codec.INT.optionalFieldOf("value", null)
-                    .forGetter(MinYRequirement::minY)).apply(builder,MinYRequirement::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, MinYRequirement> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, MinYRequirement::minY,
-            MinYRequirement::new
+    public static final StreamCodec<RegistryFriendlyByteBuf, MaxSpeedRequirement> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.FLOAT, MaxSpeedRequirement::speed,
+            MaxSpeedRequirement::new
     );
-    public static MinYRequirement of(Integer minY){
-        return new MinYRequirement(minY);
+    public static MaxSpeedRequirement of(Float speed){
+        return new MaxSpeedRequirement(speed);
     }
 
     @Override
     public boolean test(Level pLevel, BlockEntity pBlockEntity) {
-        if(minY == null)
-            return true;
-        BlockPos pos = pBlockEntity.getBlockPos();
-
-        return pos.getCenter().y >= minY;
+        if(pBlockEntity instanceof KineticBlockEntity){
+            return ((KineticBlockEntity) pBlockEntity).getSpeed() <= speed;
+        }
+        return false;
     }
 
-    /*@Override
+   /* @Override
     public boolean isPresent() {
         return false;
     }*/
 
     @Override
     public RecipeRequirementType<?> getType() {
-        return MechanicalLemonRecipeRequirementTypes.MIN_Y.get();
+        return MechanicalLemonRecipeRequirementTypes.MIN_SPEED.get();
     }
 
     @Override
@@ -56,6 +50,6 @@ public record MinYRequirement(Integer minY) implements IRecipeRequirement {
 
     @Override
     public String toString() {
-        return minY.toString();
+        return speed.toString();
     }
 }

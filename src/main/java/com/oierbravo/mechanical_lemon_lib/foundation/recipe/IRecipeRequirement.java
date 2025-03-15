@@ -25,24 +25,19 @@ public interface IRecipeRequirement {
             .dispatch(IRecipeRequirement::getType, RecipeRequirementType::streamCodec);
 
     StreamCodec<RegistryFriendlyByteBuf, List<IRecipeRequirement>> LIST_STREAM_CODEC =
-    //StreamCodec<RegistryFriendlyByteBuf, Map<RecipeRequirementType<?>, IRecipeRequirement>> LIST_STREAM_CODEC =
-           /* ByteBufCodecs.map(
-                    HashMap::new, // Constructs a map with the specified capacity
-                    RecipeRequirementType::streamCodec,
-                    IRecipeRequirement
-            );*/
         STREAM_CODEC.apply(ByteBufCodecs.list(256));
 
     boolean test(Level pLevel, BlockEntity pBlockEntity);
-    boolean isPresent();
+    /*boolean isPresent();*/
+    String getIdString();
     String toString();
     RecipeRequirementType<?> getType();
 
     default Component toTooltipComponent(){
-        return LibLang.translate("ui.recipe_requirement." + getType().toString() + ".tooltip", toString()).component();
+        return LibLang.translate("ui.recipe_requirement." + getIdString() + ".tooltip", toString()).component();
     };
     default Component toMissingComponent(){
-        return LibLang.translate("ui.recipe_requirement." + getType().toString() + ".missing", toString()).component();
+        return LibLang.translate("ui.recipe_requirement." + getIdString() + ".missing").component();
     }
 
 }

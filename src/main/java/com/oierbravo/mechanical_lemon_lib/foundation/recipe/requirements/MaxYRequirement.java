@@ -13,40 +13,40 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public record MinYRequirement(Integer minY) implements IRecipeRequirement {
-    public static String ID = "min_y";
+public record MaxYRequirement(Integer maxY) implements IRecipeRequirement{
+    public static String ID = "max_y";
 
-    public static MapCodec<MinYRequirement> CODEC = RecordCodecBuilder
+    public static MapCodec<MaxYRequirement> CODEC = RecordCodecBuilder
             .mapCodec((builder)
                     -> builder
                     .group(Codec.INT.optionalFieldOf("value", null)
-                    .forGetter(MinYRequirement::minY)).apply(builder,MinYRequirement::new));
+                    .forGetter(MaxYRequirement::maxY)).apply(builder, MaxYRequirement::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MinYRequirement> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, MinYRequirement::minY,
-            MinYRequirement::new
+    public static final StreamCodec<RegistryFriendlyByteBuf, MaxYRequirement> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, MaxYRequirement::maxY,
+            MaxYRequirement::new
     );
-    public static MinYRequirement of(Integer minY){
-        return new MinYRequirement(minY);
+    public static MaxYRequirement of(Integer maxY){
+        return new MaxYRequirement(maxY);
     }
 
     @Override
     public boolean test(Level pLevel, BlockEntity pBlockEntity) {
-        if(minY == null)
+        if(maxY == null)
             return true;
         BlockPos pos = pBlockEntity.getBlockPos();
 
-        return pos.getCenter().y >= minY;
+        return pos.getCenter().y <= maxY;
     }
 
-    /*@Override
+   /* @Override
     public boolean isPresent() {
         return false;
     }*/
 
     @Override
     public RecipeRequirementType<?> getType() {
-        return MechanicalLemonRecipeRequirementTypes.MIN_Y.get();
+        return MechanicalLemonRecipeRequirementTypes.MAX_Y.get();
     }
 
     @Override
@@ -56,6 +56,6 @@ public record MinYRequirement(Integer minY) implements IRecipeRequirement {
 
     @Override
     public String toString() {
-        return minY.toString();
+        return maxY.toString();
     }
 }

@@ -15,7 +15,7 @@ public interface IRecipeWithRequirements {
 
 
     default Optional<IRecipeRequirement> getRequirement(RecipeRequirementType<?> type) {
-        return getRecipeRequirements().stream().filter(iRecipeRequirement -> iRecipeRequirement == type).findFirst();
+        return getRecipeRequirements().stream().filter(iRecipeRequirement -> iRecipeRequirement.getType() == type).findFirst();
     }
 
     boolean checkRequirements(Level pLevel, BlockEntity pBlockEntity);

@@ -78,17 +78,11 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
         boolean result = true;
         for( IRecipeRequirement requirement : pRecipe.getRecipeRequirements()){
             if(!checkRequirement(requirement, pLevel, (BlockEntity) pSpecifics)){
-                missingRequirements.add(requirement.getType().toString());
+                missingRequirements.add(requirement.getIdString());
                 result = false;
             }
         }
-        /*for (Map.Entry<RecipeRequirementType<?>, IRecipeRequirement> entry : pRecipe.getRecipeRequirements().entrySet()) {
-            if(!checkRequirement(entry.getValue(), pLevel, (BlockEntity) pSpecifics)){
-                missingRequirements.add(entry.toString());
-                result = false;
-            }
 
-        }*/
         return result;
     }
     private boolean checkRequirement(IRecipeRequirement value, Level pLevel, BlockEntity pSpecifics){
@@ -99,7 +93,7 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
             return false;
 
         for(String requirementId : missingRequirements){
-            LibLang.translate("mechanical_lemon_lib.ui.recipe_requirement." + requirementId + ".missing").style(ChatFormatting.RED).forGoggles(tooltip,1);
+            LibLang.translate("ui.recipe_requirement." + requirementId + ".missing").style(ChatFormatting.RED).forGoggles(tooltip,1);
             added = true;
         }
         return added;
