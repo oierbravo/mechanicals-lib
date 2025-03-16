@@ -33,11 +33,6 @@ public record MinSpeedRequirement(Float speed) implements IRecipeRequirement {
         return false;
     }
 
-   /* @Override
-    public boolean isPresent() {
-        return false;
-    }*/
-
     @Override
     public RecipeRequirementType<?> getType() {
         return MechanicalLemonRecipeRequirementTypes.MIN_SPEED.get();

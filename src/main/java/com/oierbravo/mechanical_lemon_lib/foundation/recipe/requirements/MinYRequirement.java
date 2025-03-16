@@ -39,11 +39,6 @@ public record MinYRequirement(Integer minY) implements IRecipeRequirement {
         return pos.getCenter().y >= minY;
     }
 
-    /*@Override
-    public boolean isPresent() {
-        return false;
-    }*/
-
     @Override
     public RecipeRequirementType<?> getType() {
         return MechanicalLemonRecipeRequirementTypes.MIN_Y.get();

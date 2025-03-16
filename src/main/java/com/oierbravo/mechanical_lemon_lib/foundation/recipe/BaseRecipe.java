@@ -21,7 +21,7 @@ public abstract class BaseRecipe<T extends RecipeInput, P extends BaseRecipePara
 
     protected ArrayList<ICondition> conditions;
 
-    abstract public List<String> getEnabledRequirements();
+    //abstract public List<String> getEnabledRequirements();
 
     public BaseRecipe(P params){
         this.id = params.id;

@@ -44,12 +44,12 @@ public abstract class BaseRecipeBuilder<R extends BaseRecipe<?,P>, P extends Bas
     public <BRP extends BaseRecipeBuilder<?,?>> BRP withRequirement(IRecipeRequirement requirement){
     //public <BRP extends BaseRecipeSerializer<?,?> BaseRecipeBuilder<R,P> withRequirement(IRecipeRequirement requirement){
         params.recipeRequirements.add(requirement);
-        return (BRP) this;
+        return ((BRP) this);
     }
     public <BRP extends BaseRecipeBuilder<?,?>> BRP withRequirements(List<IRecipeRequirement> pRecipeRequirements) {
     //public BaseRecipeBuilder<R,P> withRequirements(List<IRecipeRequirement> pRecipeRequirements) {
         params.recipeRequirements.addAll(pRecipeRequirements);
-        return (BRP) this;
+        return ((BRP) this);
     }
 
     public BaseRecipeBuilder<R,P> whenModLoaded(String modid) {

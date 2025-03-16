@@ -13,7 +13,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public record MaxYRequirement(Integer maxY) implements IRecipeRequirement{
+public record MaxYRequirement(Integer maxY) implements IRecipeRequirement {
     public static String ID = "max_y";
 
     public static MapCodec<MaxYRequirement> CODEC = RecordCodecBuilder
@@ -38,11 +38,6 @@ public record MaxYRequirement(Integer maxY) implements IRecipeRequirement{
 
         return pos.getCenter().y <= maxY;
     }
-
-   /* @Override
-    public boolean isPresent() {
-        return false;
-    }*/
 
     @Override
     public RecipeRequirementType<?> getType() {
