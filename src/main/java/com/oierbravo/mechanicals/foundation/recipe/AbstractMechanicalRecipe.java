@@ -12,7 +12,7 @@ import java.util.List;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class BaseRecipe<T extends RecipeInput, P extends BaseRecipeParams> implements Recipe<T>, IRecipeWithRequirements {
+public abstract class AbstractMechanicalRecipe<T extends RecipeInput, P extends AbstractMechanicalRecipeParams> implements Recipe<T>, IRecipeWithRequirements {
 
     protected ResourceLocation id;
 
@@ -20,7 +20,7 @@ public abstract class BaseRecipe<T extends RecipeInput, P extends BaseRecipePara
 
     protected ArrayList<ICondition> conditions;
 
-    public BaseRecipe(P params){
+    public AbstractMechanicalRecipe(P params){
         this.id = params.id;
         recipeRequirements = params.recipeRequirements;
         this.conditions = params.conditions;

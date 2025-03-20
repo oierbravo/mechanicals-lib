@@ -66,6 +66,10 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
         blockEntity.sendData();
         return true;
     }
+    public void cleanRequirements(){
+        missingRequirements.clear();
+        blockEntity.sendData();
+    }
 
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking, boolean added) {
         if(missingRequirements.isEmpty())

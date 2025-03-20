@@ -2,7 +2,7 @@
   "mechanicals.ui.progress": "Progress: %d%%",
   "itemGroup.mechanicals": "Mechanicals",
   "mechanicals.ui.recipe.requirements.title": "Requirements:",
-  "mechanicals.ui.recipe_requirement.none.tooltip": "No specific requirement",
+  "mechanicals.ui.recipe_requirement.none.tooltip": "None",
   "mechanicals.ui.recipe_requirement.biome.tooltip.title": "Biome:",
   "mechanicals.ui.recipe_requirement.biome.tooltip.value": "%s",
   "mechanicals.ui.recipe_requirement.biome_tag.tooltip.title": "Biome Tag:",

@@ -15,20 +15,22 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
-public abstract class BaseRecipeBuilder<R extends BaseRecipe<?,P>, P extends BaseRecipeParams, BRB extends BaseRecipeBuilder<R,P,?>> {
+public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanicalRecipe<?,P>, P extends AbstractMechanicalRecipeParams, BRB extends AbstractMechanicalRecipeBuilder<R,P,?>> {
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     protected P params;
     protected ArrayList<IRecipeRequirement> recipeRequirements;
     protected ArrayList<ICondition> recipeConditions;
 
-    public BaseRecipeBuilder( ResourceLocation id){
+    public AbstractMechanicalRecipeBuilder(){
         recipeRequirements = new ArrayList<>();
         recipeConditions = new ArrayList<>();
     }
 
     public abstract R build();
+    public abstract BRB create(ResourceLocation id);
 
     public BRB withRequirement(IRecipeRequirement requirement){
         params.recipeRequirements.add(requirement);
@@ -63,5 +65,10 @@ public abstract class BaseRecipeBuilder<R extends BaseRecipe<?,P>, P extends Bas
 
     public void save(RecipeOutput recipeOutput) {
         save(recipeOutput, params.id);
+    }
+
+    public BRB with(Consumer<BRB> consummer){
+        consummer.accept((BRB) this);
+        return (BRB) this;
     }
 }

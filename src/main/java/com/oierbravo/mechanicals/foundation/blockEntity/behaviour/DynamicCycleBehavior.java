@@ -40,6 +40,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	public void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
 		currentTime = compound.getInt("CurrentTime");
 		processingTime = compound.getInt("ProcessingTime");
+		prevRunningTicks = runningTicks = compound.getInt("Ticks");
 		running = compound.getBoolean("Running");
 		finished = compound.getBoolean("Finished");
 		super.read(compound, registries, clientPacket);
@@ -63,6 +64,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	}
 	public void stop(){
 		running = false;
+		finished = true;
 		currentTime = 0;
 		processingTime = 0;
 		specifics.setWorking(false);
@@ -95,22 +97,41 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 			blockEntity.sendData();
 			return;
 		}
+		if (level.isClientSide && runningTicks == -processingTime) {
+			prevRunningTicks = currentTime;
+			return;
+		}
 
+		if (runningTicks == processingTime && specifics.getKineticSpeed() != 0) {
+			apply();
+			specifics.playSound();
+			if (!level.isClientSide)
+				blockEntity.sendData();
+		}
 
 		specifics.setWorking(true);
 		running = true;
 		currentTime += getRunningTickSpeed();
 
-		if (currentTime >= getProccessingTime() && specifics.getKineticSpeed() != 0) {
-			specifics.playSound();
-			if (!level.isClientSide){
-				stop();
-				apply();
-				specifics.onCycleCompleted();
 
-			}
+		if (!level.isClientSide && runningTicks > processingTime) {
+			specifics.onCycleCompleted();
+			stop();
+
+			blockEntity.sendData();
+			return;
+
 		}
-		blockEntity.sendData();
+
+
+		prevRunningTicks = runningTicks;
+		runningTicks += getRunningTickSpeed();
+		if (prevRunningTicks < processingTime && runningTicks >= processingTime) {
+			runningTicks = processingTime / 2;
+			// Pause the ticks until a packet is received
+			if (level.isClientSide && !blockEntity.isVirtual())
+				runningTicks = -(processingTime / 2);
+		}
 	}
 
 	public float getProgress(float partialTicks){
@@ -141,10 +162,21 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	public int getProgressPercent() {
 		if(!running)
 			return 0;
-		return Mth.clamp(currentTime * 100 / (getProccessingTime()), 0,100);
+		return Mth.clamp(runningTicks * 100 / (getProccessingTime()), 0,100);
+	}
+	public float getProgressPercentFloat() {
+		if(!running)
+			return 0;
+		return (float) runningTicks / getProccessingTime();
+	}
+
+	public float getProcessingRemainingPercentFloat() {
+		if(!running)
+			return 1;
+		return 1 - (float) (processingTime - runningTicks) / processingTime;
 	}
 	public int getCurrentTime(){
-		return currentTime;
+		return runningTicks;
 	}
 
 	public boolean isRunning(){
