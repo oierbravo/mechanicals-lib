@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public abstract class AbstractMechanicalRecipeParams {
     public ResourceLocation id;
     public ArrayList<IRecipeRequirement> recipeRequirements;
-    protected ArrayList<ICondition> conditions;
+    public ArrayList<ICondition> conditions;
 
     protected AbstractMechanicalRecipeParams(ResourceLocation id) {
         this.id = id;
-        recipeRequirements = new ArrayList<>();
-        conditions = new ArrayList<>();
+        this.recipeRequirements = new ArrayList<>();
+        this.conditions = new ArrayList<>();
     }
 }

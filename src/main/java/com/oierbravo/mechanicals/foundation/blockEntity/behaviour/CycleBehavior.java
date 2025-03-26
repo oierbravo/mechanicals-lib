@@ -179,4 +179,5 @@ public class CycleBehavior extends BlockEntityBehaviour {
 	public int getRunningTicks() {
 		return runningTicks;
 	}
+
 }

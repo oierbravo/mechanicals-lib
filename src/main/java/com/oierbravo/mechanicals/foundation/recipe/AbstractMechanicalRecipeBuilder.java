@@ -19,14 +19,9 @@ import java.util.function.Consumer;
 
 public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanicalRecipe<?,P>, P extends AbstractMechanicalRecipeParams, BRB extends AbstractMechanicalRecipeBuilder<R,P,?>> {
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
-
     protected P params;
-    protected ArrayList<IRecipeRequirement> recipeRequirements;
-    protected ArrayList<ICondition> recipeConditions;
 
     public AbstractMechanicalRecipeBuilder(){
-        recipeRequirements = new ArrayList<>();
-        recipeConditions = new ArrayList<>();
     }
 
     public abstract R build();
@@ -44,15 +39,19 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
     public BRB whenModLoaded(String modid) {
         return withCondition(new ModLoadedCondition(modid));
     }
-
     public BRB whenModMissing(String modid) {
         return withCondition(new NotCondition(new ModLoadedCondition(modid)));
     }
 
     public BRB withCondition(ICondition condition) {
-        recipeConditions.add(condition);
+        params.conditions.add(condition);
         return (BRB) this;
     }
+    public BRB withConditions(List<ICondition> conditions) {
+        params.conditions.addAll(conditions);
+        return (BRB) this;
+    }
+
     public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
         Advancement.Builder advancement = recipeOutput.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(resourceLocation))
@@ -63,8 +62,23 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
         recipeOutput.accept(resourceLocation, build(), advancement.build(params.id.withPrefix("recipes/")));
     }
 
+    public void saveCompat(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
+        Advancement.Builder advancement = recipeOutput.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(resourceLocation))
+                .rewards(AdvancementRewards.Builder.recipe(resourceLocation))
+                .requirements(AdvancementRequirements.Strategy.OR);
+        this.criteria.forEach(advancement::addCriterion);
+
+        recipeOutput.accept(resourceLocation, build(), advancement.build(params.id.withPrefix("recipes/")));
+    }
+
+
     public void save(RecipeOutput recipeOutput) {
         save(recipeOutput, params.id);
+    }
+
+    public void saveCompat(RecipeOutput recipeOutput) {
+        saveCompat(recipeOutput, params.id);
     }
 
     public BRB with(Consumer<BRB> consummer){

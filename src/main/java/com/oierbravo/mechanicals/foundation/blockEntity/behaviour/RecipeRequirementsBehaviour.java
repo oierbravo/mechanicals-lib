@@ -38,7 +38,7 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
         return !missingRequirements.isEmpty();
     }
 
-    public <T> boolean checkRequirements(R pRecipe) {
+    public boolean checkRequirements(R pRecipe) {
         missingRequirements = new ArrayList<>();
 
         if(!specifics.matchesIngredients(pRecipe)){
