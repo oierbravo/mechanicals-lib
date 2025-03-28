@@ -17,7 +17,7 @@ public class MechanicalCreativeModeTabs {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = TAB_REGISTER.register("main",
             () -> CreativeModeTab.builder()
-                    .title(LibLang.translate("itemGroup.mechanicals").component())
+                    .title(LibLang.translate("itemGroup:main").component())
                     .icon(() -> Items.EGG.asItem().getDefaultInstance())
                     .build());
 

@@ -68,8 +68,11 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
                 .rewards(AdvancementRewards.Builder.recipe(resourceLocation))
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
-
-        recipeOutput.accept(resourceLocation, build(), advancement.build(params.id.withPrefix("recipes/")));
+        String compatId = resourceLocation.getPath().split("/")[0] + "/compat/" + resourceLocation.getPath().split("/")[1];
+        ResourceLocation compatResourceLocation = ResourceLocation.fromNamespaceAndPath(resourceLocation.getNamespace(), compatId);
+        recipeOutput.accept(
+                compatResourceLocation,
+                build(), advancement.build(params.id.withPrefix("recipes/")));
     }
 
 

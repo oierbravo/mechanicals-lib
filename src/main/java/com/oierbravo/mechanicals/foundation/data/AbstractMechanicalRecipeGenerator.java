@@ -17,13 +17,18 @@ public abstract class AbstractMechanicalRecipeGenerator<MRB extends AbstractMech
     String displayName;
     String recipeTypeId;
     Supplier<MRB> builderSupplier;
+    boolean compat;
 
     public AbstractMechanicalRecipeGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String namespace, String recipeTypeId , Supplier<MRB> builderSupplier,String displayName) {
+        this(output, registries, namespace, recipeTypeId, builderSupplier, displayName, false);
+    }
+    public AbstractMechanicalRecipeGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String namespace, String recipeTypeId , Supplier<MRB> builderSupplier,String displayName, boolean compat) {
         super(output, registries);
         this.namespace = namespace;
         this.recipeTypeId = recipeTypeId;
         this.displayName = displayName;
         this.builderSupplier = builderSupplier;
+        this.compat = compat;
     }
 
     abstract protected void buildRecipes(RecipeOutput recipeOutput);
@@ -39,6 +44,7 @@ public abstract class AbstractMechanicalRecipeGenerator<MRB extends AbstractMech
     protected MRB create(String id){
         return builderSupplier.get().create(ResourceLocation.fromNamespaceAndPath(namespace, recipeTypeId + "/" + id));
     }
+
     @Override
     public final String getName() {
         return displayName + " recipes.";

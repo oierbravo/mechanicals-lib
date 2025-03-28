@@ -157,17 +157,17 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	public int getProgressPercent() {
 		if(!running)
 			return 0;
-		return Mth.clamp(runningTicks * 100 / (getCycleTime()), 0,100);
+		return Mth.clamp(prevRunningTicks * 100 / (getCycleTime()), 0,100);
 	}
 	public float getProgressPercentFloat() {
 		if(!running)
 			return 0;
-		return (float) runningTicks / getCycleTime();
+		return (float) prevRunningTicks / getCycleTime();
 	}
 
 	public float getProcessingRemainingPercentFloat() {
 		if(!running)
 			return 1;
-		return 1 - (float) (getCycleTime() - runningTicks) / getCycleTime();
+		return 1 - (float) (getCycleTime() - prevRunningTicks) / getCycleTime();
 	}
 }

@@ -1,6 +1,6 @@
 {
   "mechanicals.ui.progress": "Progress: %d%%",
-  "itemGroup.mechanicals": "Mechanicals",
+  "mechanicals.itemGroup:main": "Mechanicals",
   "mechanicals.ui.recipe.requirements.title": "Requirements:",
   "mechanicals.ui.recipe_requirement.none.tooltip": "None",
   "mechanicals.ui.recipe_requirement.biome.tooltip.title": "Biome:",

@@ -161,10 +161,10 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		return running;
 	}
 	public int getTotalProgressPercent() {
-		return Mth.clamp(runningTicks * 100 / (cycleTime /cycleDivider) * numCycles, 0,100);
+		return Mth.clamp(prevRunningTicks * 100 / (cycleTime /cycleDivider) * numCycles, 0,100);
 	}
 	public int getCycleProgressPercent() {
-		return Mth.clamp(runningTicks * 100 / (cycleTime /cycleDivider), 0,100);
+		return Mth.clamp(prevRunningTicks * 100 / (cycleTime /cycleDivider), 0,100);
 	}
 	public int getCycleTime(){
 		return cycleTime;
