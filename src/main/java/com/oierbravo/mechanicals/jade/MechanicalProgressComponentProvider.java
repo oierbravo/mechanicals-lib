@@ -26,7 +26,7 @@ public class MechanicalProgressComponentProvider implements IBlockComponentProvi
             if(progress > 0){
                 IElementHelper helper = IElementHelper.get();
                 ProgressStyle progressStyle = helper.progressStyle().textColor(1);
-                tooltip.add(helper.progress((float)progress / 100, LibLang.translate("progress", progress).component().withColor(java.awt.Color.GRAY.getRGB()), progressStyle.color(java.awt.Color.YELLOW.getRGB()), BoxStyle.getTransparent(), false));
+                tooltip.add(helper.progress((float)progress / 100, LibLang.translate("ui.progress", progress).component().withColor(java.awt.Color.GRAY.getRGB()), progressStyle.color(java.awt.Color.YELLOW.getRGB()), BoxStyle.getTransparent(), false));
 
             }
         }

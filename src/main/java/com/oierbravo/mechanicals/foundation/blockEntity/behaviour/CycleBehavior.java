@@ -124,11 +124,11 @@ public class CycleBehavior extends BlockEntityBehaviour {
 
 		prevRunningTicks = runningTicks;
 		runningTicks += getRunningTickSpeed();
-		if (prevRunningTicks < cycleTime / 2 && runningTicks >= cycleTime / cycleDivider) {
-			runningTicks = cycleTime / 2;
+		if (prevRunningTicks < cycleTime / cycleDivider && runningTicks >= cycleTime / cycleDivider) {
+			runningTicks = cycleTime / cycleDivider;
 			// Pause the ticks until a packet is received
 			if (level.isClientSide && !blockEntity.isVirtual())
-				runningTicks = -(cycleTime / 2);
+				runningTicks = -(cycleTime / cycleDivider);
 		}
 	}
 
