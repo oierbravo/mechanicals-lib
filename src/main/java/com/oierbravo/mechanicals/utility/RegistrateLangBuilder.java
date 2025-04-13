@@ -18,4 +18,12 @@ public class RegistrateLangBuilder {
         registrate.addRawLang(literal,defaultTranslation);
         return this;
     }
+    public RegistrateLangBuilder addBlockTooltip(String id, String defaultTranslation){
+        registrate.addRawLang("block." + namespace + "." + id + ".tooltip",defaultTranslation);
+        return this;
+    }
+    public RegistrateLangBuilder addBlockTooltipSummary(String id, String defaultTranslation){
+        registrate.addRawLang("block." + namespace + "." + id + ".tooltip.summary",defaultTranslation);
+        return this;
+    }
 }

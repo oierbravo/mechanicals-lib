@@ -18,14 +18,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	private boolean running;
 	private boolean finished;
 
-	public interface DynamicCycleBehaviorSpecifics {
 
-		void onOperationCompleted();
-		float getKineticSpeed();
-		boolean tryProcess(boolean simulate);
-		void playCompletionSound();
-		int getProcessingTime();
-	}
 
 	public <T extends SmartBlockEntity & DynamicCycleBehaviorSpecifics> DynamicCycleBehavior(T te) {
 		super(te);
@@ -104,11 +97,16 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 
 		prevRunningTicks = runningTicks;
 		runningTicks += getRunningTickSpeed();
+		if (level.isClientSide){
+			specifics.playSound();
+			specifics.showParticles();
+		}
 		if (prevRunningTicks < cycleTime && runningTicks >= cycleTime) {
 			runningTicks = cycleTime;
 			// Pause the ticks until a packet is received
-			if (level.isClientSide && !blockEntity.isVirtual())
+			if (level.isClientSide && !blockEntity.isVirtual()){
 				runningTicks = -(cycleTime);
+			}
 		}
 	}
 
@@ -169,5 +167,16 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 		if(!running)
 			return 1;
 		return 1 - (float) (getCycleTime() - prevRunningTicks) / getCycleTime();
+	}
+
+	public interface DynamicCycleBehaviorSpecifics {
+		default void onOperationCompleted(){};
+
+		default void playSound(){};
+		default void showParticles(){};
+		default void playCompletionSound(){};
+		float getKineticSpeed();
+		boolean tryProcess(boolean simulate);
+		int getProcessingTime();
 	}
 }

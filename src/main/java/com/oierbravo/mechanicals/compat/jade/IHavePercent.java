@@ -1,4 +1,4 @@
-package com.oierbravo.mechanicals.jade;
+package com.oierbravo.mechanicals.compat.jade;
 
 public interface IHavePercent {
     int getProgressPercent();

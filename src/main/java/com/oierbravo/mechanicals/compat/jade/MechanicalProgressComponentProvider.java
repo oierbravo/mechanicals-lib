@@ -1,4 +1,4 @@
-package com.oierbravo.mechanicals.jade;
+package com.oierbravo.mechanicals.compat.jade;
 
 import com.oierbravo.mechanicals.utility.LibLang;
 import net.minecraft.nbt.CompoundTag;

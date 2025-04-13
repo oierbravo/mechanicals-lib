@@ -1,4 +1,4 @@
-package com.oierbravo.mechanicals.jei;
+package com.oierbravo.mechanicals.compat.jei;
 
 public class CreateRecipeCategoryBuilder {
 }

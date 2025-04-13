@@ -22,16 +22,6 @@ public class CycleBehavior extends BlockEntityBehaviour {
 	private int numCycles;
 	private int currentCycle;
 
-	public interface CycleBehaviourSpecifics {
-
-		void onCycleCompleted();
-		void onOperationCompletd();
-		float getKineticSpeed();
-		boolean tryProcess(boolean simulate);
-		void playSound();
-
-		int getCycles();
-	}
 
 	public <T extends SmartBlockEntity & CycleBehaviourSpecifics> CycleBehavior(T te, int pCycle, boolean pActuateHalfCycle) {
 		super(te);
@@ -105,7 +95,6 @@ public class CycleBehavior extends BlockEntityBehaviour {
 
 		if (runningTicks == cycleTime / cycleDivider && specifics.getKineticSpeed() != 0) {
 			apply();
-			specifics.playSound();
 			if (!level.isClientSide)
 				blockEntity.sendData();
 		}
@@ -117,6 +106,7 @@ public class CycleBehavior extends BlockEntityBehaviour {
 				finished = true;
 				running = false;
 				specifics.onOperationCompletd();
+				specifics.playCompletionSound();
 			}
 			blockEntity.sendData();
 			return;
@@ -124,6 +114,12 @@ public class CycleBehavior extends BlockEntityBehaviour {
 
 		prevRunningTicks = runningTicks;
 		runningTicks += getRunningTickSpeed();
+
+		if (level.isClientSide){
+			specifics.playSound();
+			specifics.showParticles();
+		}
+
 		if (prevRunningTicks < cycleTime / cycleDivider && runningTicks >= cycleTime / cycleDivider) {
 			runningTicks = cycleTime / cycleDivider;
 			// Pause the ticks until a packet is received
@@ -178,6 +174,19 @@ public class CycleBehavior extends BlockEntityBehaviour {
 	}
 	public int getRunningTicks() {
 		return runningTicks;
+	}
+	public interface CycleBehaviourSpecifics {
+
+		default void onCycleCompleted(){};
+		default void onOperationCompletd(){};
+
+		default void playSound(){};
+		default void showParticles(){};
+		default void playCompletionSound(){};
+
+		int getCycles();
+		float getKineticSpeed();
+		boolean tryProcess(boolean simulate);
 	}
 
 }

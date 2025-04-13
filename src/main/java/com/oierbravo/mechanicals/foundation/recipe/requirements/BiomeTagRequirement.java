@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.oierbravo.mechanicals.foundation.recipe.IRecipeRequirement;
 import com.oierbravo.mechanicals.foundation.recipe.RecipeRequirementType;
 import com.oierbravo.mechanicals.register.MechanicalRecipeRequirementTypes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -35,13 +36,15 @@ public record BiomeTagRequirement(TagKey<Biome> tag) implements IRecipeRequireme
     public ResourceLocation getResourceLocation(){
         return tag.location();
     }
-   /* public static final StreamCodec<RegistryFriendlyByteBuf, BiomeTagRequirement> STREAM_CODEC = StreamCodec.composite(
-            ResourceKey.streamCodec(Registries.BIOME), BiomeTagRequirement::tag,
-            BiomeTagRequirement::new
-    );*/
 
     public static BiomeTagRequirement of(TagKey<Biome> tag) {
         return new BiomeTagRequirement(tag);
+    }
+    public static BiomeTagRequirement of(ResourceLocation resourceLocation) {
+        return of(TagKey.create(Registries.BIOME, resourceLocation));
+    }
+    public static BiomeTagRequirement of(String id) {
+        return new BiomeTagRequirement(ResourceLocation.parse(id));
     }
 
     public boolean test(Level pLevel, BlockEntity pBlockEntity) {

@@ -58,11 +58,6 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
             return false;
         }
 
-        //meetsRequirements = meetsRequirements(pRecipe.get().getRecipeRequirements(), specifics);
-        //if(!pRecipe.get().checkRequirements((BlockEntity) specifics)){
-
-        //}
-
         blockEntity.sendData();
         return true;
     }
