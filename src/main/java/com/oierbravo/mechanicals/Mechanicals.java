@@ -2,6 +2,7 @@ package com.oierbravo.mechanicals;
 
 import com.mojang.logging.LogUtils;
 import com.oierbravo.mechanicals.register.MechanicalCreativeModeTabs;
+import com.oierbravo.mechanicals.register.MechanicalIngredientTypes;
 import com.oierbravo.mechanicals.register.MechanicalRecipeRequirementTypes;
 import com.oierbravo.mechanicals.register.MechanicalRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +24,8 @@ public class Mechanicals {
         MechanicalCreativeModeTabs.register(modEventBus);
 
         modEventBus.addListener(this::newRegistries);
-        MechanicalRecipeRequirementTypes.init(modEventBus);
+        MechanicalRecipeRequirementTypes.register(modEventBus);
+        MechanicalIngredientTypes.register(modEventBus);
         modEventBus.addListener(this::doClientStuff);
 
     }

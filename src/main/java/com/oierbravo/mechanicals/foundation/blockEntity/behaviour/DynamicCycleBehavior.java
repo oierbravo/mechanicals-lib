@@ -87,7 +87,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 				blockEntity.sendData();
 		}
 
-		if (!level.isClientSide && runningTicks > cycleTime) {
+		if (!level.isClientSide && runningTicks >= cycleTime) {
 			finished = true;
 			running = false;
 			specifics.onOperationCompleted();
@@ -98,7 +98,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 		prevRunningTicks = runningTicks;
 		runningTicks += getRunningTickSpeed();
 		if (level.isClientSide){
-			specifics.playSound();
+			specifics.playRunningSound();
 			specifics.showParticles();
 		}
 		if (prevRunningTicks < cycleTime && runningTicks >= cycleTime) {
@@ -172,7 +172,7 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	public interface DynamicCycleBehaviorSpecifics {
 		default void onOperationCompleted(){};
 
-		default void playSound(){};
+		default void playRunningSound(){};
 		default void showParticles(){};
 		default void playCompletionSound(){};
 		float getKineticSpeed();

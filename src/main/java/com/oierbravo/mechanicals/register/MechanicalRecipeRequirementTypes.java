@@ -34,7 +34,7 @@ public class MechanicalRecipeRequirementTypes {
     public static final Supplier<RecipeRequirementType<BiomeTagRequirement>> BIOME_TAG =
             register(BiomeTagRequirement.ID, BiomeTagRequirement.CODEC, BiomeTagRequirement.STREAM_CODEC);
 
-    public static void init(IEventBus modEventBus) {
+    public static void register(IEventBus modEventBus) {
         RECIPE_REQUIREMENT_TYPES.register(modEventBus);
     }
 

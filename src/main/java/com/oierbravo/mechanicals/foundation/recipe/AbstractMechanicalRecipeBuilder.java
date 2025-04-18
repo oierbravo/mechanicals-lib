@@ -20,12 +20,13 @@ import java.util.function.Consumer;
 public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanicalRecipe<?,P>, P extends AbstractMechanicalRecipeParams, BRB extends AbstractMechanicalRecipeBuilder<R,P,?>> {
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     protected P params;
+    protected ResourceLocation id;
 
     public AbstractMechanicalRecipeBuilder(){
     }
 
     public abstract R build();
-    public abstract BRB create(ResourceLocation id);
+    public abstract BRB create();
 
     public BRB withRequirement(IRecipeRequirement requirement){
         params.recipeRequirements.add(requirement);
@@ -51,7 +52,10 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
         params.conditions.addAll(conditions);
         return (BRB) this;
     }
-
+    public BRB withId(ResourceLocation id){
+        this.id = id;
+        return (BRB) this;
+    }
     public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
         Advancement.Builder advancement = recipeOutput.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(resourceLocation))
@@ -59,7 +63,7 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
 
-        recipeOutput.accept(resourceLocation, build(), advancement.build(params.id.withPrefix("recipes/")));
+        recipeOutput.accept(resourceLocation, build(), advancement.build(resourceLocation.withPrefix("recipes/")));
     }
 
     public void saveCompat(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
@@ -72,16 +76,16 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
         ResourceLocation compatResourceLocation = ResourceLocation.fromNamespaceAndPath(resourceLocation.getNamespace(), compatId);
         recipeOutput.accept(
                 compatResourceLocation,
-                build(), advancement.build(params.id.withPrefix("recipes/")));
+                build(), advancement.build(resourceLocation.withPrefix("recipes/")));
     }
 
 
     public void save(RecipeOutput recipeOutput) {
-        save(recipeOutput, params.id);
+        save(recipeOutput, this.id);
     }
 
     public void saveCompat(RecipeOutput recipeOutput) {
-        saveCompat(recipeOutput, params.id);
+        saveCompat(recipeOutput, this.id);
     }
 
     public BRB with(Consumer<BRB> consummer){

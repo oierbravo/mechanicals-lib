@@ -2,6 +2,7 @@ package com.oierbravo.mechanicals.register;
 
 import com.oierbravo.mechanicals.Mechanicals;
 import com.oierbravo.mechanicals.utility.LibLang;
+import com.oierbravo.mechanicals.utility.MechanicalLangIdGenerator;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.IEventBus;
 
@@ -17,7 +18,7 @@ public class MechanicalCreativeModeTabs {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = TAB_REGISTER.register("main",
             () -> CreativeModeTab.builder()
-                    .title(LibLang.translate("itemGroup:main").component())
+                    .title(LibLang.translate(MechanicalLangIdGenerator.creativeTabId("main")).component())
                     .icon(() -> Items.EGG.asItem().getDefaultInstance())
                     .build());
 

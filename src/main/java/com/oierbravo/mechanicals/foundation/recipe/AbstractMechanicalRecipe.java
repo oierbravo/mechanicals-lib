@@ -21,12 +21,8 @@ public abstract class AbstractMechanicalRecipe<T extends RecipeInput, P extends 
     protected ArrayList<ICondition> conditions;
 
     public AbstractMechanicalRecipe(P params){
-        id = params.id;
         recipeRequirements = params.recipeRequirements;
         conditions = params.conditions;
-    }
-    public ResourceLocation getId() {
-        return id;
     }
     public List<ICondition> getConditions(){
         return conditions;

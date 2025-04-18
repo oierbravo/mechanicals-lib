@@ -97,9 +97,12 @@ public class CycleBehavior extends BlockEntityBehaviour {
 			apply();
 			if (!level.isClientSide)
 				blockEntity.sendData();
+			else
+				specifics.playActuateSound();
+
 		}
 
-		if (!level.isClientSide && runningTicks > cycleTime) {
+		if (!level.isClientSide && runningTicks >= cycleTime) {
 			specifics.onCycleCompleted();
 			currentCycle++;
 			if(currentCycle == numCycles){
@@ -116,7 +119,7 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		runningTicks += getRunningTickSpeed();
 
 		if (level.isClientSide){
-			specifics.playSound();
+			specifics.playRunningSound();
 			specifics.showParticles();
 		}
 
@@ -180,7 +183,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		default void onCycleCompleted(){};
 		default void onOperationCompletd(){};
 
-		default void playSound(){};
+		default void playActuateSound(){};
+		default void playRunningSound(){};
 		default void showParticles(){};
 		default void playCompletionSound(){};
 

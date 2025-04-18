@@ -1,5 +1,8 @@
 package com.oierbravo.mechanicals.foundation.data;
 
+import com.simibubi.create.content.kinetics.crusher.CrushingRecipe;
+import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipe;
+import com.simibubi.create.content.kinetics.deployer.ManualApplicationRecipe;
 import com.simibubi.create.content.kinetics.millstone.MillingRecipe;
 import com.simibubi.create.content.kinetics.mixer.MixingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
@@ -18,12 +21,17 @@ public abstract class AbstractCreateRecipeGen extends RecipeProvider {
         super(output, registries);
         this.resourceLocationSupplier = resourceLocationSupplier;
     }
-
+    protected ProcessingRecipeBuilder<CrushingRecipe> createCrushing(String name){
+        return new ProcessingRecipeBuilder<>(CrushingRecipe::new, resourceLocationSupplier.get().withPath(name));
+    }
     protected ProcessingRecipeBuilder<MillingRecipe> createMilling(String name){
         return new ProcessingRecipeBuilder<>(MillingRecipe::new, resourceLocationSupplier.get().withPath(name));
     }
     protected ProcessingRecipeBuilder<MixingRecipe> createMixing(String name){
         return new ProcessingRecipeBuilder<>(MixingRecipe::new, resourceLocationSupplier.get().withPath(name));
+    }
+    protected ProcessingRecipeBuilder<ItemApplicationRecipe> createItemApplication(String name){
+        return new ProcessingRecipeBuilder<>(ManualApplicationRecipe::new, resourceLocationSupplier.get().withPath(name));
     }
 }
 

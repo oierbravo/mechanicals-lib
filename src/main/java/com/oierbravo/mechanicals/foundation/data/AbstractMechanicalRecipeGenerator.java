@@ -42,7 +42,7 @@ public abstract class AbstractMechanicalRecipeGenerator<MRB extends AbstractMech
 
 
     protected MRB create(String id){
-        return builderSupplier.get().create(ResourceLocation.fromNamespaceAndPath(namespace, recipeTypeId + "/" + id));
+        return builderSupplier.get().create().withId(ResourceLocation.fromNamespaceAndPath(namespace, recipeTypeId + "/" + id));
     }
 
     @Override

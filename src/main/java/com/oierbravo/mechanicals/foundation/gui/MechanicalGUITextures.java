@@ -10,7 +10,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 public enum MechanicalGUITextures implements ScreenElement {
-    JEI_SHORT_ARROW("jei/widgets", 20, 9);
+    JEI_SHORT_ARROW("jei/widgets", 20, 9),
+    JEI_DOWN_RIGHT_ARROW("jei/widgets",0 , 9,17,12);
 
     public static final int FONT_COLOR = 5726074;
     public final ResourceLocation location;

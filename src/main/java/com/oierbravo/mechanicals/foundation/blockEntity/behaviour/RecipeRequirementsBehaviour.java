@@ -47,7 +47,7 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
             return false;
         }
 
-        if(!specifics.hasEnoughOutputSpace()){
+        if(!specifics.hasEnoughOutputSpace(pRecipe)){
             missingRequirements.add("output");
         }
 
@@ -101,7 +101,7 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
     }
 
     public interface RecipeRequirementsSpecifics<R extends IRecipeWithRequirements> {
-        boolean hasEnoughOutputSpace();
+        boolean hasEnoughOutputSpace(R recipe);
         boolean matchesIngredients(R recipe);
     }
 }

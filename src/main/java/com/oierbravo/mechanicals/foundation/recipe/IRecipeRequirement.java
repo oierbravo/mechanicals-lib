@@ -3,6 +3,7 @@ package com.oierbravo.mechanicals.foundation.recipe;
 import com.mojang.serialization.Codec;
 import com.oierbravo.mechanicals.register.MechanicalRegistries;
 import com.oierbravo.mechanicals.utility.LibLang;
+import com.oierbravo.mechanicals.utility.MechanicalLangIdGenerator;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -31,12 +32,18 @@ public interface IRecipeRequirement {
     RecipeRequirementType<?> getType();
 
     default Pair<Component,Component> toTooltipComponent(){
-        return Pair.of(LibLang.translate("ui.recipe_requirement." + getIdString() + ".tooltip.title").component(),
-                        LibLang.translate("ui.recipe_requirement." + getIdString() + ".tooltip.value", toString()).component()
+        return Pair.of(LibLang.translate(MechanicalLangIdGenerator.recipeRequirement(getIdString(), "title")).component(),
+                        LibLang.translate(MechanicalLangIdGenerator.recipeRequirement(getIdString(), "value"), toString()).component()
         );
     };
+    default Component toItemTooltipComponent(){
+        return LibLang.translate(MechanicalLangIdGenerator.recipeRequirement(getIdString(), "title")).component()
+                .append(
+                        LibLang.translate(MechanicalLangIdGenerator.recipeRequirement(getIdString(), "value"), toString()).component()
+                );
+    };
     default Component toMissingComponent(){
-        return LibLang.translate("ui.recipe_requirement." + getIdString() + ".missing").component();
+        return LibLang.translate(MechanicalLangIdGenerator.recipeRequirement(getIdString(), "missing")).component();
     }
 
 }

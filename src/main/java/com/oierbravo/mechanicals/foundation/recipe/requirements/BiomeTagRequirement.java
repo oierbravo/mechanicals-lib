@@ -25,7 +25,6 @@ public record BiomeTagRequirement(TagKey<Biome> tag) implements IRecipeRequireme
     public static MapCodec<BiomeTagRequirement> CODEC = RecordCodecBuilder
             .mapCodec((builder)
                     -> builder
-                    //.group(TagKey.codec(Registries.BIOME).optionalFieldOf("value", null)
                     .group(ResourceLocation.CODEC.optionalFieldOf("value", null)
                             .forGetter(BiomeTagRequirement::getResourceLocation)).apply(builder,BiomeTagRequirement::new));
 

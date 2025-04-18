@@ -7,6 +7,7 @@ import com.oierbravo.mechanicals.compat.kubejs.bindings.RecipeRequirementBuilder
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeComponentFactoryRegistry;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
+import net.neoforged.fml.ModList;
 
 public class MechanicalsJsPlugin implements KubeJSPlugin {
 
@@ -17,12 +18,14 @@ public class MechanicalsJsPlugin implements KubeJSPlugin {
         registry.register(RecipeRequirementsComponent.RECIPE_REQUIREMENT);
         registry.register(ResourceLocationComponent.RESOURCE_LOCATION);
         registry.register(CreateFluidIngredientComponent.FLUID_INGREDIENT);
+        registry.register(CountableIngredientComponent.COUNTABLE_INGREDIENT);
     }
 
     @Override
     public void registerBindings(BindingRegistry registry) {
         if (registry.type().isServer()) {
-            registry.add("Output", ProcessingOutputBuilder.class);
+            if(ModList.get().isLoaded("create"))
+                registry.add("Output", ProcessingOutputBuilder.class);
             registry.add("BlockPredicate", BlockPredicateBuilder.class);
             registry.add("RecipeRequirement", RecipeRequirementBuilder.class);
         }

@@ -13,6 +13,10 @@ public interface IRecipeWithRequirements {
 
     ArrayList<IRecipeRequirement> getRecipeRequirements();
 
+    default List<IRecipeRequirement> getJeiRecipeRequirements(){
+        return getRecipeRequirements();
+    }
+
     default Optional<IRecipeRequirement> getRequirement(RecipeRequirementType<?> type) {
         return getRecipeRequirements().stream().filter(iRecipeRequirement -> iRecipeRequirement.getType() == type).findFirst();
     }
@@ -39,6 +43,12 @@ public interface IRecipeWithRequirements {
         if(getRecipeRequirements().isEmpty())
             return List.of();
         return getRecipeRequirements().stream().map(IRecipeRequirement::toTooltipComponent).toList();
+    }
+
+    default List<Pair<Component,Component>> getJeiRequirementsTooltips(){
+        if(getJeiRecipeRequirements().isEmpty())
+            return List.of();
+        return getJeiRecipeRequirements().stream().map(IRecipeRequirement::toTooltipComponent).toList();
     }
 
 }
