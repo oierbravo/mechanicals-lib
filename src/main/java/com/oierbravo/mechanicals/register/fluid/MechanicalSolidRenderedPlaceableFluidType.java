@@ -12,6 +12,10 @@ import org.joml.Vector3f;
 
 import java.util.function.Supplier;
 
+/**
+ *  From Create: com.simibubi.create.AllFluids.SolidRenderedPlaceableFluidType
+ *  License: MIT
+ */
 public class MechanicalSolidRenderedPlaceableFluidType extends AllFluids.TintedFluidType {
 
         private Vector3f fogColor;
