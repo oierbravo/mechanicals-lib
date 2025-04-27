@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 public class CycleBehavior extends BlockEntityBehaviour {
 
-	private int cycleTime;
+	private final int cycleTime;
 	private boolean actuateHalfcycle;
 	public static final BehaviourType<CycleBehavior> TYPE = new BehaviourType<>();
 	public CycleBehaviourSpecifics specifics;
@@ -43,7 +43,6 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		finished = compound.getBoolean("Finished");
 		prevRunningTicks = runningTicks = compound.getInt("Ticks");
 		currentCycle = compound.getInt("CurrentCycle");
-		cycleTime = compound.getInt("CycleTime");
 		numCycles = compound.getInt("NumCycles");
 		actuatedTimes = compound.getInt("ActuatedTimes");
 		actuatedInCurrentCycle = compound.getBoolean("Actuated");
@@ -56,7 +55,6 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		compound.putBoolean("Finished", finished);
 		compound.putInt("Ticks", runningTicks);
 		compound.putInt("CurrentCycle", currentCycle);
-		compound.putInt("CycleTime", cycleTime);
 		compound.putInt("NumCycles", numCycles);
 		compound.putInt("ActuatedTimes", actuatedTimes);
 		compound.putBoolean("Actuated", actuatedInCurrentCycle);
