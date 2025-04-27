@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.registries.*;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
 
 @Mod(Mechanicals.MODID)
@@ -26,11 +25,7 @@ public class Mechanicals {
         modEventBus.addListener(this::newRegistries);
         MechanicalRecipeRequirementTypes.register(modEventBus);
         MechanicalIngredientTypes.register(modEventBus);
-        modEventBus.addListener(this::doClientStuff);
 
-    }
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        MechanicalPartials.init();
     }
 
     private void newRegistries(NewRegistryEvent event) {
