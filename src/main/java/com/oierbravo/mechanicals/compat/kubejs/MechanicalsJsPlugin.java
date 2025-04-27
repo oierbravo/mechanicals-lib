@@ -19,6 +19,7 @@ public class MechanicalsJsPlugin implements KubeJSPlugin {
         registry.register(ResourceLocationComponent.RESOURCE_LOCATION);
         registry.register(CreateFluidIngredientComponent.FLUID_INGREDIENT);
         registry.register(CountableIngredientComponent.COUNTABLE_INGREDIENT);
+        registry.register(CoupleBooleanComponent.BOOLEAN);
     }
 
     @Override

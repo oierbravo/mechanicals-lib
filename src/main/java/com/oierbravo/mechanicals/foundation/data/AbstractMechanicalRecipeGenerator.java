@@ -4,7 +4,6 @@ import com.oierbravo.mechanicals.foundation.recipe.AbstractMechanicalRecipeBuild
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -31,7 +30,6 @@ public abstract class AbstractMechanicalRecipeGenerator<MRB extends AbstractMech
         this.compat = compat;
     }
 
-    abstract protected void buildRecipes(RecipeOutput recipeOutput);
 
     private Block block(String resourceLocationString){
         return block(ResourceLocation.parse(resourceLocationString));

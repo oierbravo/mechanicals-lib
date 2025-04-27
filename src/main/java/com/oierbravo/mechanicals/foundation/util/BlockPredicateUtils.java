@@ -24,9 +24,13 @@ public class BlockPredicateUtils {
         public static BlockPredicate.Builder from(ResourceLocation resourceLocation){
             return from(BuiltInRegistries.BLOCK.get(resourceLocation));
         }
+        public static BlockPredicate.Builder from(String id){
+            return from(BuiltInRegistries.BLOCK.get(ResourceLocation.parse(id)));
+        }
         public static BlockPredicate build(Block block){
             return from(block).build();
         }
+
         public static BlockPredicate build(ResourceLocation resourceLocation){
             return build(BuiltInRegistries.BLOCK.get(resourceLocation));
         }

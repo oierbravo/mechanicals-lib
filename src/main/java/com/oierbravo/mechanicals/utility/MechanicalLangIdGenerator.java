@@ -14,5 +14,4 @@ public class MechanicalLangIdGenerator {
         return "ui.recipe_requirement." + id + ".tooltip." + variant;
     }
 
-
 }

@@ -41,10 +41,6 @@ public record BlockPredicateComponent() implements RecipeComponent<BlockPredicat
 
     public static final RecipeComponent<Couple<BlockPredicate>> BLOCK_PREDICATE_COUPLE = new RecipeComponent<>() {
         private static final TypeInfo WRAP_TYPE = TypeInfo.OBJECT_ARRAY;
-        //private static final TypeInfo WRAP_TYPE = TypeInfo.of(Couple.class).withParams(TypeInfo.of(BlockPredicate.class));
-
-
-
 
         @Override
         public Codec<Couple<BlockPredicate>> codec() {
@@ -59,7 +55,10 @@ public record BlockPredicateComponent() implements RecipeComponent<BlockPredicat
         @Override
         public Couple<BlockPredicate> wrap(Context cx, KubeRecipe recipe, Object from) {
             if(from instanceof NativeArray nativeArray){
-                return Couple.create((BlockPredicate) nativeArray.getFirst(),(BlockPredicate)  nativeArray.get(1));
+                return Couple.create(
+                        (BlockPredicate) nativeArray.getFirst(),
+                        (BlockPredicate) nativeArray.get(1)
+                );
             }
 
             return Couple.create(BlockPredicate.Builder.block().build(),BlockPredicate.Builder.block().build());

@@ -48,6 +48,17 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 		prevRunningTicks = 0;
 		runningTicks = 0;
 		cycleTime = specifics.getProcessingTime();
+		specifics.cycleStart();
+		blockEntity.sendData();
+
+	}
+
+	public void stop() {
+		running = false;
+		prevRunningTicks = 0;
+		runningTicks = 0;
+		cycleTime = 1;
+		specifics.cycleStop();
 		blockEntity.sendData();
 
 	}
@@ -170,6 +181,9 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	}
 
 	public interface DynamicCycleBehaviorSpecifics {
+		default void cycleStart(){};
+		default void cycleStop(){};
+
 		default void onOperationCompleted(){};
 
 		default void playRunningSound(){};

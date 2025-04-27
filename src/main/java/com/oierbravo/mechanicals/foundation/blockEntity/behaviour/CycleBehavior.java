@@ -21,6 +21,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 	private int cycleDivider;
 	private int numCycles;
 	private int currentCycle;
+	private int actuatedTimes;
+	private boolean actuatedInCurrentCycle;
 
 
 	public <T extends SmartBlockEntity & CycleBehaviourSpecifics> CycleBehavior(T te, int pCycle, boolean pActuateHalfCycle) {
@@ -31,6 +33,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		numCycles = 0;
 		cycleDivider = (actuateHalfcycle) ? 2 : 1;
 		currentCycle = 0;
+		actuatedTimes = 0;
+		actuatedInCurrentCycle = false;
 	}
 
 	@Override
@@ -41,6 +45,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		currentCycle = compound.getInt("CurrentCycle");
 		cycleTime = compound.getInt("CycleTime");
 		numCycles = compound.getInt("NumCycles");
+		actuatedTimes = compound.getInt("ActuatedTimes");
+		actuatedInCurrentCycle = compound.getBoolean("Actuated");
 		super.read(compound,registries, clientPacket);
 	}
 
@@ -52,17 +58,29 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		compound.putInt("CurrentCycle", currentCycle);
 		compound.putInt("CycleTime", cycleTime);
 		compound.putInt("NumCycles", numCycles);
+		compound.putInt("ActuatedTimes", actuatedTimes);
+		compound.putBoolean("Actuated", actuatedInCurrentCycle);
+
 		super.write(compound, registries, clientPacket);
 	}
 
 	public void start() {
 		running = true;
+		finished = false;
 		prevRunningTicks = 0;
 		runningTicks = 0;
 		currentCycle = 0;
+		actuatedTimes = 0;
+		actuatedInCurrentCycle = false;
 		numCycles = specifics.getCycles();
 		blockEntity.sendData();
-
+	}
+	public void restartCycle() {
+		running = true;
+		finished = false;
+		prevRunningTicks = 0;
+		runningTicks = 0;
+		actuatedInCurrentCycle = false;
 	}
 
 	@Override
@@ -88,17 +106,21 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		}
 
 
-		if (level.isClientSide && runningTicks == -cycleTime / cycleDivider) {
-			prevRunningTicks = cycleTime / cycleDivider;
+		if (level.isClientSide && runningTicks == -cycleTime) {
+			prevRunningTicks = cycleTime;
 			return;
 		}
 
-		if (runningTicks == cycleTime / cycleDivider && specifics.getKineticSpeed() != 0) {
-			apply();
-			if (!level.isClientSide)
-				blockEntity.sendData();
-			else
-				specifics.playActuateSound();
+		if (runningTicks >= cycleTime / cycleDivider && specifics.getKineticSpeed() != 0) {
+			if(!actuatedInCurrentCycle) {
+				actuatedTimes++;
+				apply();
+				if (!level.isClientSide) {
+					blockEntity.sendData();
+					specifics.playActuateSound();
+				}
+				actuatedInCurrentCycle = true;
+			}
 
 		}
 
@@ -110,6 +132,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 				running = false;
 				specifics.onOperationCompletd();
 				specifics.playCompletionSound();
+			} else {
+				restartCycle();
 			}
 			blockEntity.sendData();
 			return;
@@ -123,11 +147,12 @@ public class CycleBehavior extends BlockEntityBehaviour {
 			specifics.showParticles();
 		}
 
-		if (prevRunningTicks < cycleTime / cycleDivider && runningTicks >= cycleTime / cycleDivider) {
-			runningTicks = cycleTime / cycleDivider;
+		if (prevRunningTicks < cycleTime && runningTicks >= cycleTime) {
+			runningTicks = cycleTime;
 			// Pause the ticks until a packet is received
-			if (level.isClientSide && !blockEntity.isVirtual())
-				runningTicks = -(cycleTime / cycleDivider);
+			if (level.isClientSide && !blockEntity.isVirtual()){
+				runningTicks = -(cycleTime);
+			}
 		}
 	}
 
@@ -142,7 +167,8 @@ public class CycleBehavior extends BlockEntityBehaviour {
 
 	protected void apply() {
 		Level level = getWorld();
-
+		if(actuatedTimes != numCycles)
+			return;
 		if (level.isClientSide)
 			return;
 
@@ -170,6 +196,12 @@ public class CycleBehavior extends BlockEntityBehaviour {
 	}
 	public int getCurrentCycle(){
 		return currentCycle;
+	}
+	public int getActuatedTimes(){
+		return actuatedTimes;
+	}
+	public int getCycles(){
+		return numCycles;
 	}
 
 	public int getPrevRunningTicks() {
