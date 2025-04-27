@@ -123,7 +123,12 @@ repositories {
             includeGroup "com.github.llamalad7.mixinextras"
         }
     }
-
+    maven {
+        url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
+    }
     maven {
         url "https://maven.latvian.dev/releases"
         content {
@@ -191,7 +196,16 @@ jar {
 }
 
 publishing {
-    // other settings of publication
+    repositories {
+        maven {
+            name = "fosilRepository"
+            url = uri("https://maven.fosil.eu/releases")
+            credentials {
+                username = System.getenv()["MAVEN_USER"]
+                password = System.getenv()["MAVEN_PASS"]
+            }
+        }
+    }
     publications {
         mavenJava(MavenPublication) {
             artifact jar
