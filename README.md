@@ -1,4 +1,24 @@
 # Mechanicals Lib
+Library for neoforge modding. Mainly, but not limited to, create addons.
+
+## Add as dependency
+- `build.gradle` repository:
+```
+    maven {
+        url "https://maven.fosil.eu/releases"
+    }
+```
+
+- `build.gradle` dependency:
+```
+jarJar(implementation("com.oierbravo.mechanicals:Mechanicals:${minecraft_version}-${mechanicals_version}"))
+```
+
+- `gradle.properties` variables:
+```
+minecraft_version=1.21.1
+mechanicals_version=4.28 #Use always latest.
+```
 
 ## License
 - Mechanicals Lib is licensed under the LGPL license. See [LICENSE](LICENSE) for more information.
