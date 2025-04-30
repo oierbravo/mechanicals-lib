@@ -194,7 +194,36 @@ jar {
     }
 
 }
+publishMods {
+    file = jar.archiveFile
+    changelog = rootProject.file("changes/${minecraft_version}-${mod_version}.md").text
+    type = STABLE
+    version = "$minecraft_version-$mod_version"
+    displayName = "$mod_name $mod_version for mc$minecraft_version"
+    modLoaders.add("neoforge")
 
+    var cfToken = System.getenv("CF_TOKEN")
+    if(cfToken != null) {
+        curseforge {
+            accessToken = providers.environmentVariable("CF_TOKEN")
+            projectId = "${curseforge_id}"
+            minecraftVersions.add(minecraft_version)
+            clientRequired = true
+            serverRequired = true
+            optional("kubejs")
+
+        }
+    }
+    var mrToken = System.getenv("MODRINTH_TOKEN")
+    if(mrToken != null) {
+        modrinth {
+            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+            projectId = "${modrinth_id}"
+            minecraftVersions.add(minecraft_version)
+            optional("kubejs")
+        }
+    }
+}
 publishing {
     repositories {
         maven {
