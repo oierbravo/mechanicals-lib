@@ -28,7 +28,7 @@ public record MinSpeedRequirement(Float speed) implements IRecipeRequirement {
     @Override
     public boolean test(Level pLevel, BlockEntity pBlockEntity) {
         if(pBlockEntity instanceof KineticBlockEntity){
-            return ((KineticBlockEntity) pBlockEntity).getSpeed() >= speed;
+            return Math.abs(((KineticBlockEntity) pBlockEntity).getSpeed()) >= speed;
         }
         return false;
     }
