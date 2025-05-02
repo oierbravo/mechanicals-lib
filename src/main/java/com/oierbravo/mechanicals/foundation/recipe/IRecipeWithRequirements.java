@@ -9,6 +9,9 @@ import java.util.Map;
 public interface IRecipeWithRequirements {
 
     Map<RecipeRequirementType<?>, RecipeRequirement> getRecipeRequirements();
+    default Map<RecipeRequirementType<?>, RecipeRequirement> getRecipeRequirementsToCheck(){
+        return getRecipeRequirements();
+    };
     List<RecipeRequirementType<?>> getEnabledRequirements();
 
     default <T extends RecipeRequirement> T getRequirement(RecipeRequirementType<T> type) {
