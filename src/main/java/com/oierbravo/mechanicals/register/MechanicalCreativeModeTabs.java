@@ -1,7 +1,6 @@
 package com.oierbravo.mechanicals.register;
 
 import com.oierbravo.mechanicals.Mechanicals;
-import com.oierbravo.mechanicals.MechanicalsItems;
 import com.oierbravo.mechanicals.utility.LibLang;
 import com.oierbravo.mechanicals.utility.MechanicalLangIdGenerator;
 import net.minecraft.core.registries.Registries;
@@ -18,7 +17,7 @@ public class MechanicalCreativeModeTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = TAB_REGISTER.register("main",
             () -> CreativeModeTab.builder()
                     .title(LibLang.translate(MechanicalLangIdGenerator.creativeTabId("main")).component())
-                    .icon(MechanicalsItems.RARE_OIERBRAVO_PACKAGE::asStack)
+                    .icon(MechanicalsCreateItems.RARE_OIERBRAVO_PACKAGE::asStack)
                     .build());
 
     public static CreativeModeTab getBaseTab() {

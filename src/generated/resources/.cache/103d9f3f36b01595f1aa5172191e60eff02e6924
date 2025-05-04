@@ -1,0 +1,4 @@
+// 1.21.1	2025-05-04T23:06:44.870012166	Registries
+3ac9c961e4e88e22214c5850adcf0dc220dbef7f data/mechanicals/neoforge/biome_modifier/add_tree_lemon.json
+4fc932894ff8968ec3c0d5dbe22f53c5f01065be data/mechanicals/worldgen/configured_feature/lemon.json
+60c5cb6f22137c7a2871356b4d0ff82874c78956 data/mechanicals/worldgen/placed_feature/lemon_placed.json

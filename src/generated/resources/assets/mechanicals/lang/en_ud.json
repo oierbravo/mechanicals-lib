@@ -1,4 +1,9 @@
 {
+  "block.mechanicals.lemon_leaves": "sǝʌɐǝꞀ uoɯǝꞀ",
+  "block.mechanicals.lemon_log": "boꞀ uoɯǝꞀ",
+  "block.mechanicals.lemon_planks": "sʞuɐןԀ uoɯǝꞀ",
+  "block.mechanicals.lemon_sapling": "buıןdɐS uoɯǝꞀ",
+  "block.mechanicals.stripped_lemon_log": "boꞀ uoɯǝꞀ pǝddıɹʇS",
   "item.create.rare_package": "ǝbɐʞɔɐԀ oʌɐɹqɹǝıO ǝɹɐᴚ",
   "mechanicals.itemGroup:main": "sןɐɔıuɐɥɔǝW",
   "mechanicals.ui.progress": "%d%% :ssǝɹboɹԀ",

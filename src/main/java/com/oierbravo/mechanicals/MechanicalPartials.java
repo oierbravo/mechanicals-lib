@@ -1,5 +1,6 @@
 package com.oierbravo.mechanicals;
 
+import com.oierbravo.mechanicals.register.MechanicalsCreateItems;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.Create;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
@@ -12,7 +13,7 @@ public class MechanicalPartials {
     }
 
     public static void init() {
-        registerRarePackageModel(MechanicalsItems.RARE_OIERBRAVO_PACKAGE.getId(), 12, 10);
+        registerRarePackageModel(MechanicalsCreateItems.RARE_OIERBRAVO_PACKAGE.getId(), 12, 10);
     }
     /* From DragonPlus library  LGPL3 License*/
     public static void registerRarePackageModel(ResourceLocation id, int width, int height) {

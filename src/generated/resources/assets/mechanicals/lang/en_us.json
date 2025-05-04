@@ -1,4 +1,9 @@
 {
+  "block.mechanicals.lemon_leaves": "Lemon Leaves",
+  "block.mechanicals.lemon_log": "Lemon Log",
+  "block.mechanicals.lemon_planks": "Lemon Planks",
+  "block.mechanicals.lemon_sapling": "Lemon Sapling",
+  "block.mechanicals.stripped_lemon_log": "Stripped Lemon Log",
   "item.create.rare_package": "Rare Oierbravo Package",
   "mechanicals.itemGroup:main": "Mechanicals",
   "mechanicals.ui.progress": "Progress: %d%%",

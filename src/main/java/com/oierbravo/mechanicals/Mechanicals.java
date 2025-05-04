@@ -1,13 +1,11 @@
 package com.oierbravo.mechanicals;
 
 import com.mojang.logging.LogUtils;
-import com.oierbravo.mechanicals.register.MechanicalCreativeModeTabs;
-import com.oierbravo.mechanicals.register.MechanicalIngredientTypes;
-import com.oierbravo.mechanicals.register.MechanicalRecipeRequirementTypes;
-import com.oierbravo.mechanicals.register.MechanicalRegistries;
+import com.oierbravo.mechanicals.infrastructure.data.MechanicalsWorldGenProvider;
+import com.oierbravo.mechanicals.register.*;
 import com.oierbravo.mechanicals.utility.RegistrateLangBuilder;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.providers.RegistrateDataProvider;
+import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -27,17 +25,14 @@ public class Mechanicals {
 
     public static final String MODID = "mechanicals";
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static final CreateRegistrate REGISTRATE =
-            CreateRegistrate.create(MODID);
-                    //.defaultCreativeTab(MechanicalCreativeModeTabs.MAIN_TAB.getKey());
-
+    public static final NonNullSupplier<Registrate> REGISTRATE = NonNullSupplier.lazy(() -> Registrate.create(MODID).defaultCreativeTab(MechanicalCreativeModeTabs.MAIN_TAB.getKey()));
 
     public Mechanicals(IEventBus modEventBus, ModContainer modContainer) {
-        REGISTRATE.registerEventListeners(modEventBus);
-
         MechanicalCreativeModeTabs.register(modEventBus);
+
+        MechanicalsBlocks.register();
         if(ModList.get().isLoaded("create"))
-            MechanicalsItems.register();
+            MechanicalsCreateItems.register();
 
         modEventBus.addListener(this::newRegistries);
         MechanicalRecipeRequirementTypes.register(modEventBus);
@@ -83,12 +78,12 @@ public class Mechanicals {
         if (event.includeServer()) {
 
         }
-        event.getGenerator().addProvider(true, Mechanicals.registrate().setDataProvider(new RegistrateDataProvider(Mechanicals.registrate(), MODID, event)));
+        generator.addProvider(event.includeServer(), new MechanicalsWorldGenProvider(output, lookupProvider));
+    }
+    public static Registrate registrate() {
+        return REGISTRATE.get();
+    }
 
-    }
-    public static CreateRegistrate registrate() {
-        return REGISTRATE;
-    }
 
     private void newRegistries(NewRegistryEvent event) {
         MechanicalRegistries.register(event);
