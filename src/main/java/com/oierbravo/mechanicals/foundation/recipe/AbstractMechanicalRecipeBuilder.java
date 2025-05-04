@@ -11,7 +11,6 @@ import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,10 +51,15 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
         params.conditions.addAll(conditions);
         return (BRB) this;
     }
+    public BRB withoutCreateFromNothing(){
+        params.conditions.add(new NotCondition(new ModLoadedCondition("create_from_nothing")));
+        return (BRB) this;
+    }
     public BRB withId(ResourceLocation id){
         this.id = id;
         return (BRB) this;
     }
+
     public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
         Advancement.Builder advancement = recipeOutput.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(resourceLocation))

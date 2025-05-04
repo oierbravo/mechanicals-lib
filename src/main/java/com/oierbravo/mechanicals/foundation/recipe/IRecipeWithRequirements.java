@@ -12,6 +12,9 @@ public interface IRecipeWithRequirements {
 
 
     ArrayList<IRecipeRequirement> getRecipeRequirements();
+    default ArrayList<IRecipeRequirement> getRecipeRequirementsToCheck(){
+        return getRecipeRequirements();
+    };
 
     default List<IRecipeRequirement> getJeiRecipeRequirements(){
         return getRecipeRequirements();
@@ -22,7 +25,7 @@ public interface IRecipeWithRequirements {
     }
 
     default boolean meetsRequirements(BlockEntity pBlockEntity){
-        for( IRecipeRequirement requirement : getRecipeRequirements()){
+        for( IRecipeRequirement requirement : getRecipeRequirementsToCheck()){
             if(!requirement.test(pBlockEntity.getLevel(), pBlockEntity)){
                 return false;
             }
@@ -31,7 +34,7 @@ public interface IRecipeWithRequirements {
     };
     default List<String> getMissingRequirements(BlockEntity pBlockEntity){
         ArrayList<String> missingRequirements = new ArrayList<>();
-        for( IRecipeRequirement requirement : getRecipeRequirements() ){
+        for( IRecipeRequirement requirement : getRecipeRequirementsToCheck() ){
             if(!requirement.test(pBlockEntity.getLevel(), pBlockEntity)){
                 missingRequirements.add(requirement.getIdString());
             }

@@ -45,7 +45,7 @@ neoForge {
 
             systemProperty 'mixin.debug.export', 'true'
             systemProperty 'mixin.debug.verbose', 'true'
-            programArgument '-mixin.config=create.mixins.json'
+            //programArgument '-mixin.config=create.mixins.json'
             //programArgument '-mixin.config=ponder.mixins.json'
             //systemProperty("mixin.env.remapRefMap", "true")
             //systemProperty("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
@@ -82,6 +82,11 @@ neoForge {
 }
 
 sourceSets.main {
+    java {
+        if (!kubejs_enabled.toBoolean()) {
+            exclude 'com/oierbravo/' + mod_id + '/compat/kubejs/**'
+        }
+    }
     resources {
         srcDir 'src/generated/resources'
         exclude '.cache/'
@@ -162,10 +167,11 @@ dependencies {
 
     implementation("curse.maven:jade-324717:${jade_id}")
 
-    compileOnly("dev.architectury:architectury-neoforge:$architectury_version")
-    api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
-    interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:$kubejs_version") // optional
-
+    if (kubejs_enabled.toBoolean()) {
+        compileOnly("dev.architectury:architectury-neoforge:$architectury_version")
+        api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+        interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:$kubejs_version") // optional
+    }
     //runtimeOnly("dev.architectury:architectury-neoforge:13.0.8")
     //implementation("dev.ftb.mods:ftb-chunks-neoforge:2101.1.1")
     //implementation("dev.ftb.mods:ftb-teams-neoforge:2101.1.0")

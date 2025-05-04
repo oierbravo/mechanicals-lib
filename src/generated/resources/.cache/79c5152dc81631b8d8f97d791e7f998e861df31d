@@ -1,0 +1,5 @@
+// 1.21.1	2025-05-04T16:55:01.037771567	Registrate Provider for mechanicals [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (enchantments), Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+5f26a44da2deca0a7ca1420d5b690b35d8162888 assets/mechanicals/lang/en_ud.json
+78d16206e37cdeb567ba39f6711870623e26fad9 assets/mechanicals/lang/en_us.json
+635a8314088193b6588391b7ca3df484ccfb9019 assets/mechanicals/models/item/rare_oierbravo_package.json
+d59a31d63e4e56ff1b2ff8ea88e736939ebee609 data/create/tags/item/packages.json

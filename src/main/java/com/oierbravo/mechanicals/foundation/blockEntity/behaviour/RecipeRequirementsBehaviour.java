@@ -2,6 +2,7 @@ package com.oierbravo.mechanicals.foundation.blockEntity.behaviour;
 
 import com.oierbravo.mechanicals.foundation.recipe.IRecipeWithRequirements;
 import com.oierbravo.mechanicals.utility.LibLang;
+import com.oierbravo.mechanicals.utility.MechanicalLangIdGenerator;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -71,7 +72,7 @@ public class RecipeRequirementsBehaviour<R extends IRecipeWithRequirements> exte
             return false;
 
         for(String requirementId : missingRequirements){
-            LibLang.translate("ui.recipe_requirement." + requirementId + ".missing").style(ChatFormatting.RED).forGoggles(tooltip,1);
+            LibLang.translate(MechanicalLangIdGenerator.recipeRequirement(requirementId, "missing")).style(ChatFormatting.RED).forGoggles(tooltip,1);
             added = true;
         }
         return added;

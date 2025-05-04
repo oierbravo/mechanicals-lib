@@ -1,0 +1,6 @@
+{
+  "parent": "mechanicals:item/package/custom_12x10",
+  "textures": {
+    "2": "mechanicals:item/package/rare_oierbravo"
+  }
+}

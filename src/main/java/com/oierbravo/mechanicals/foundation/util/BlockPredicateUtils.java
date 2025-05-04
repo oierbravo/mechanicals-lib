@@ -1,6 +1,8 @@
 package com.oierbravo.mechanicals.foundation.util;
 
+import net.createmod.catnip.data.Pair;
 import net.minecraft.advancements.critereon.BlockPredicate;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -18,6 +21,13 @@ import java.util.function.Function;
 
 public class BlockPredicateUtils {
     public static class Builder {
+        public static <T extends Comparable<T>> BlockPredicate.Builder from(Block block, List<Pair<Property<T>,T>> properties){
+            BlockPredicate.Builder builder = BlockPredicate.Builder.block()
+                    .of(block);
+            StatePropertiesPredicate.Builder propBuilder = StatePropertiesPredicate.Builder.properties();
+            properties.forEach(property -> propBuilder.hasProperty(property.getFirst(), String.valueOf(property.getSecond())));
+            return builder;
+        }
         public static BlockPredicate.Builder from(Block block){
             return BlockPredicate.Builder.block().of(block);
         }
@@ -36,6 +46,17 @@ public class BlockPredicateUtils {
         }
         public static BlockPredicate build(String id){
             return build(ResourceLocation.parse(id));
+        }
+        //With properties
+        public static <T extends Comparable<T>> BlockPredicate build(Block block, List<Pair<Property<T>,T>> properties){
+            return from(block,properties).build();
+        }
+
+        public static <T extends Comparable<T>> BlockPredicate build(ResourceLocation resourceLocation, List<Pair<Property<T>,T>> properties){
+            return build(BuiltInRegistries.BLOCK.get(resourceLocation),properties);
+        }
+        public static <T extends Comparable<T>> BlockPredicate build(String id, List<Pair<Property<T>,T>> properties ){
+            return build(ResourceLocation.parse(id),properties);
         }
     }
     public static class Matcher {
