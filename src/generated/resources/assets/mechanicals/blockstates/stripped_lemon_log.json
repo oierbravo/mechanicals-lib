@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "mechanicals:block/stripped_lemon_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "mechanicals:block/stripped_lemon_log"
+    },
+    "axis=z": {
+      "model": "mechanicals:block/stripped_lemon_log_horizontal",
+      "x": 90
     }
   }
 }

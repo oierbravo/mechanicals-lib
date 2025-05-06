@@ -6,6 +6,7 @@
   "block.mechanicals.stripped_lemon_log": "Stripped Lemon Log",
   "item.create.rare_package": "Rare Oierbravo Package",
   "mechanicals.itemGroup:main": "Mechanicals",
+  "mechanicals.mechanicals.feature.lemon_stuff.description": "Enabled Lemon stuff feature for Mechanicals",
   "mechanicals.ui.progress": "Progress: %d%%",
   "mechanicals.ui.recipe.requirement.none.tooltip": "None",
   "mechanicals.ui.recipe.requirements.title": "Requirements:",

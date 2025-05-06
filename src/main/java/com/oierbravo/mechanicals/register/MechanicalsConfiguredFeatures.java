@@ -24,10 +24,10 @@ public class MechanicalsConfiguredFeatures {
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, LEMON_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(MechanicalsBlocks.LEMON_LOG.get()),
-                new StraightTrunkPlacer(2, 3, 1),
+                new StraightTrunkPlacer(1, 3, 1),
                 BlockStateProvider.simple(MechanicalsBlocks.LEMON_LEAVES.get()),
-                new BlobFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), 4),
-                new TwoLayersFeatureSize(1, 0, 2)).build());
+                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
+                new TwoLayersFeatureSize(1, 0, 1)).build());
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {

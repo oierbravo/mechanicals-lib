@@ -1,0 +1,13 @@
+{
+  "features": {
+    "enabled": [
+      "mechanicals:lemon_stuff"
+    ]
+  },
+  "pack": {
+    "description": {
+      "translate": "mechanicals.mechanicals.feature.lemon_stuff.description"
+    },
+    "pack_format": 48
+  }
+}
