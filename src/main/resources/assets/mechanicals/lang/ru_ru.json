@@ -8,7 +8,7 @@
   "mechanicals.itemGroup:main": "Mechanicals",
   "mechanicals.mechanicals.feature.lemon_stuff.description": "Включены лимонные предметы для Mechanicals",
   "mechanicals.ui.progress": "Прогресс: %d%%",
-  "mechanicals.ui.recipe.requirement.none.tooltip": "Нет",
+  "mechanicals.ui.recipe_requirement.none.tooltip": "Нет",
   "mechanicals.ui.recipe.requirements.title": "Требования:",
   "mechanicals.ui.recipe_requirement.biome.tooltip.missing": "Неверный биом",
   "mechanicals.ui.recipe_requirement.biome.tooltip.title": "Биом:",
