@@ -1,14 +1,8 @@
 {
-  "block.mechanicals.lemon_leaves": "Lemon Leaves",
-  "block.mechanicals.lemon_log": "Lemon Log",
-  "block.mechanicals.lemon_planks": "Lemon Planks",
-  "block.mechanicals.lemon_sapling": "Lemon Sapling",
-  "block.mechanicals.stripped_lemon_log": "Stripped Lemon Log",
   "item.create.rare_package": "Rare Oierbravo Package",
   "mechanicals.itemGroup:main": "Mechanicals",
   "mechanicals.mechanicals.feature.lemon_stuff.description": "Enabled Lemon stuff feature for Mechanicals",
   "mechanicals.ui.progress": "Progress: %d%%",
-  "mechanicals.ui.recipe.requirement.none.tooltip": "None",
   "mechanicals.ui.recipe.requirements.title": "Requirements:",
   "mechanicals.ui.recipe_requirement.biome.tooltip.missing": "Incorrect biome",
   "mechanicals.ui.recipe_requirement.biome.tooltip.title": "Biome:",
@@ -28,5 +22,6 @@
   "mechanicals.ui.recipe_requirement.min_y.tooltip.missing": "Y position Too low",
   "mechanicals.ui.recipe_requirement.min_y.tooltip.title": "Min Y:",
   "mechanicals.ui.recipe_requirement.min_y.tooltip.value": "%s",
+  "mechanicals.ui.recipe_requirement.none.tooltip": "None",
   "mechanicals.ui.recipe_requirement.output.tooltip.missing": "Output full or incompatible"
 }

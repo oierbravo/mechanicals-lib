@@ -1,14 +1,8 @@
 {
-  "block.mechanicals.lemon_leaves": "sǝʌɐǝꞀ uoɯǝꞀ",
-  "block.mechanicals.lemon_log": "boꞀ uoɯǝꞀ",
-  "block.mechanicals.lemon_planks": "sʞuɐןԀ uoɯǝꞀ",
-  "block.mechanicals.lemon_sapling": "buıןdɐS uoɯǝꞀ",
-  "block.mechanicals.stripped_lemon_log": "boꞀ uoɯǝꞀ pǝddıɹʇS",
   "item.create.rare_package": "ǝbɐʞɔɐԀ oʌɐɹqɹǝıO ǝɹɐᴚ",
   "mechanicals.itemGroup:main": "sןɐɔıuɐɥɔǝW",
   "mechanicals.mechanicals.feature.lemon_stuff.description": "sןɐɔıuɐɥɔǝW ɹoɟ ǝɹnʇɐǝɟ ɟɟnʇs uoɯǝꞀ pǝןqɐuƎ",
   "mechanicals.ui.progress": "%d%% :ssǝɹboɹԀ",
-  "mechanicals.ui.recipe.requirement.none.tooltip": "ǝuoN",
   "mechanicals.ui.recipe.requirements.title": ":sʇuǝɯǝɹınbǝᴚ",
   "mechanicals.ui.recipe_requirement.biome.tooltip.missing": "ǝɯoıq ʇɔǝɹɹoɔuI",
   "mechanicals.ui.recipe_requirement.biome.tooltip.title": ":ǝɯoıᗺ",
@@ -28,5 +22,6 @@
   "mechanicals.ui.recipe_requirement.min_y.tooltip.missing": "ʍoן oo⟘ uoıʇısod ʎ",
   "mechanicals.ui.recipe_requirement.min_y.tooltip.title": ":ʎ uıW",
   "mechanicals.ui.recipe_requirement.min_y.tooltip.value": "%s",
+  "mechanicals.ui.recipe_requirement.none.tooltip": "ǝuoN",
   "mechanicals.ui.recipe_requirement.output.tooltip.missing": "ǝןqıʇɐdɯoɔuı ɹo ןןnɟ ʇndʇnO"
 }

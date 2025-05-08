@@ -1,22 +1,18 @@
 package com.oierbravo.mechanicals;
 
 import com.mojang.logging.LogUtils;
-import com.oierbravo.mechanicals.infrastructure.data.MechanicalsWorldGenProvider;
 import com.oierbravo.mechanicals.register.*;
-import com.oierbravo.mechanicals.utility.LibLang;
 import com.oierbravo.mechanicals.utility.RegistrateLangBuilder;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
@@ -44,7 +40,7 @@ public class Mechanicals {
 
         MechanicalCreativeModeTabs.register(modEventBus);
 
-        MechanicalsBlocks.register();
+        //MechanicalsBlocks.register();
         if(ModList.get().isLoaded("create"))
             MechanicalsCreateItems.register();
 
@@ -52,7 +48,7 @@ public class Mechanicals {
         MechanicalRecipeRequirementTypes.register(modEventBus);
         MechanicalIngredientTypes.register(modEventBus);
         modEventBus.addListener(Mechanicals::gatherData);
-        modEventBus.addListener(Mechanicals::addFeaturePacks);
+        //modEventBus.addListener(Mechanicals::addFeaturePacks);
 
         generateLangEntries();
 
@@ -63,7 +59,7 @@ public class Mechanicals {
                 .addCreativeTab("Mechanicals")
                 .add("mechanicals.feature.lemon_stuff.description","Enabled Lemon stuff feature for Mechanicals")
                 .add("ui.recipe.requirements.title", "Requirements:")
-                .add("ui.recipe.requirement.none.tooltip", "None")
+                .add("ui.recipe_requirement.none.tooltip", "None")
                 .addRecipeRequirementTitle("biome", "Biome:")
                 .addRecipeRequirementValue("biome", "%s")
                 .addRecipeRequirementMissing("biome", "Incorrect biome")
@@ -91,17 +87,17 @@ public class Mechanicals {
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        DataGenerator.PackGenerator featurePack = generator.getBuiltinDatapack(true, "mechanicals", "lemon_stuff");
+        /*DataGenerator.PackGenerator featurePack = generator.getBuiltinDatapack(true, "mechanicals", "lemon_stuff");
         featurePack.addProvider(packOutput -> PackMetadataGenerator.forFeaturePack(
                 packOutput,
                 LibLang.translate("mechanicals.feature.lemon_stuff.description").component(),
                 FeatureFlagSet.of(MechanicalsFeatureFlags.FEATURE_LEMON_STUFF)
-        ));
+        ));*/
 
         if (event.includeServer()) {
 
         }
-        generator.addProvider(event.includeServer(), new MechanicalsWorldGenProvider(output, lookupProvider));
+        //generator.addProvider(event.includeServer(), new MechanicalsWorldGenProvider(output, lookupProvider));
     }
 
     public static void addFeaturePacks(final AddPackFindersEvent event) {
