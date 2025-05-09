@@ -124,6 +124,8 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	public float getProgress(float partialTicks){
 		if (!running)
 			return 0;
+		if(getCycleTime() == 0)
+			return 0;
 		int runningTicks = Math.abs(this.runningTicks);
 		float ticks = Mth.lerp(partialTicks, prevRunningTicks, runningTicks);
 		return ticks/ cycleTime * 100;
@@ -166,16 +168,22 @@ public class DynamicCycleBehavior extends BlockEntityBehaviour {
 	public int getProgressPercent() {
 		if(!running)
 			return 0;
+		if(getCycleTime() == 0)
+			return 0;
 		return Mth.clamp(prevRunningTicks * 100 / (getCycleTime()), 0,100);
 	}
 	public float getProgressPercentFloat() {
 		if(!running)
+			return 0;
+		if(getCycleTime() == 0)
 			return 0;
 		return (float) prevRunningTicks / getCycleTime();
 	}
 
 	public float getProcessingRemainingPercentFloat() {
 		if(!running)
+			return 1;
+		if(getCycleTime() == 0)
 			return 1;
 		return 1 - (float) (getCycleTime() - prevRunningTicks) / getCycleTime();
 	}
