@@ -31,7 +31,7 @@ public class Mechanicals {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final NonNullSupplier<Registrate> REGISTRATE = NonNullSupplier.lazy(
             () -> Registrate.create(MODID)
-                    .defaultCreativeTab(MechanicalCreativeModeTabs.MAIN_TAB.getKey())
+                    //.defaultCreativeTab(MechanicalCreativeModeTabs.MAIN_TAB.getKey())
     );
 
 
