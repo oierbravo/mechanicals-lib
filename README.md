@@ -1,6 +1,8 @@
 # Mechanicals Lib
 Library for neoforge modding. Mainly, but not limited to, create addons.
 
+## [Dedicated wiki](https://wiki.mechanicalmods.net/mods/mechanicals-lib/)
+
 ## Add as dependency
 - `build.gradle` repository:
 ```
