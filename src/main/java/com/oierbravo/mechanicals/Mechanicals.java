@@ -42,7 +42,7 @@ public class Mechanicals {
 
         //MechanicalsBlocks.register();
         if(ModList.get().isLoaded("create"))
-            MechanicalsCreateItems.register();
+            CreateStuff.register();
 
         modEventBus.addListener(this::newRegistries);
         MechanicalRecipeRequirementTypes.register(modEventBus);
