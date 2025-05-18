@@ -1,5 +1,6 @@
 package com.oierbravo.mechanicals.foundation.recipe;
 
+import com.oierbravo.mechanicals.foundation.data.CompatMods;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -43,6 +44,9 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
         return withCondition(new NotCondition(new ModLoadedCondition(modid)));
     }
 
+    public BRB forCompat(CompatMods mod) {
+        return withCondition(new ModLoadedCondition(mod.getId()));
+    }
     public BRB withCondition(ICondition condition) {
         params.conditions.add(condition);
         return (BRB) this;
