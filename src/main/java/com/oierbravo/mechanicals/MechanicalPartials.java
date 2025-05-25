@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MechanicalPartials {
     public static final PartialModel SHAFT_QUARTER = block("shaft_quarter");
+
+
     private static PartialModel block(String path) {
         return PartialModel.of(Mechanicals.asResource("block/" + path));
     }

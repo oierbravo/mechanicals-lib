@@ -9,9 +9,6 @@ import net.minecraft.core.Direction;
 
 public class QuarterShaftVisual<T extends KineticBlockEntity> extends SingleAxisRotatingVisual<T> {
     public QuarterShaftVisual(VisualizationContext context, T blockEntity, float partialTick, Direction direction) {
-        super(context, blockEntity, partialTick, direction, Models.partial(MechanicalPartials.SHAFT_QUARTER));
-    }
-    public static <T extends KineticBlockEntity> QuarterShaftVisual<T> bottom(VisualizationContext context, T blockEntity, float partialTick) {
-        return new QuarterShaftVisual<>(context, blockEntity, partialTick, Direction.NORTH);
+        super(context, blockEntity, partialTick, direction, Models.partial(MechanicalPartials.SHAFT_QUARTER, direction.getOpposite()));
     }
 }

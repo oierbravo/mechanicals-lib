@@ -179,7 +179,10 @@ dependencies {
 
 
 }
-
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
 processResources {
     def buildProps = project.properties.clone()
 
