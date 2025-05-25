@@ -1,0 +1,59 @@
+package com.oierbravo.mechanicals.foundation.gui;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.createmod.catnip.gui.UIRenderHelper;
+import net.createmod.catnip.gui.element.ScreenElement;
+import net.createmod.catnip.theme.Color;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+public enum MechanicalGUITextures implements ScreenElement {
+    JEI_SHORT_ARROW("jei/widgets", 20, 9),
+    JEI_DOWN_RIGHT_ARROW("jei/widgets",0 , 9,17,12);
+
+    public static final int FONT_COLOR = 5726074;
+    public final ResourceLocation location;
+    public int width;
+    public int height;
+    public int startX;
+    public int startY;
+
+    private MechanicalGUITextures(String location, int width, int height) {
+        this(location, 0, 0, width, height);
+    }
+
+    private MechanicalGUITextures(int startX, int startY) {
+        this("icons", startX * 16, startY * 16, 16, 16);
+    }
+    private MechanicalGUITextures(String location, int startX, int startY, int width, int height) {
+        this("mechanicals", location, startX, startY, width, height);
+    }
+
+    private MechanicalGUITextures(String namespace, String location, int startX, int startY, int width, int height) {
+        this.location = new ResourceLocation(namespace, "textures/gui/" + location + ".png");
+        this.width = width;
+        this.height = height;
+        this.startX = startX;
+        this.startY = startY;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void bind() {
+        RenderSystem.setShaderTexture(0, this.location);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void render(GuiGraphics graphics, int x, int y) {
+        graphics.blit(location, x, y, startX, startY, width, height);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void render(GuiGraphics graphics, int x, int y, Color c) {
+        bind();
+        UIRenderHelper.drawColoredTexture(graphics, c, x, y, startX, startY, width, height);
+    }
+
+
+}
