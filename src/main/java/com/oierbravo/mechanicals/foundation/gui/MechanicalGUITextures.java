@@ -11,7 +11,19 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 public enum MechanicalGUITextures implements ScreenElement {
     JEI_SHORT_ARROW("jei/widgets", 20, 9),
-    JEI_DOWN_RIGHT_ARROW("jei/widgets",0 , 9,17,12);
+    JEI_DOWN_RIGHT_ARROW("jei/widgets",0 , 9,17,12),
+
+    PLAYER_INVENTORY("player_inventory", 176, 108),
+
+
+    BUTTON("widgets", 18, 18),
+    BUTTON_HOVER("widgets", 18, 0, 18, 18),
+    BUTTON_DOWN("widgets", 36, 0, 18, 18),
+    SLOT_EMPTY("widgets", 36, 0, 18, 18),
+    RF_VERTIVAL_BAR("widgets",0,18,11,32),
+    PROGRESS_ARROW_EMPTY("widgets",0,48,32,8),
+    PROGRESS_ARROW_FULL("widgets",0,56,32,8);
+
 
     public static final int FONT_COLOR = 5726074;
     public final ResourceLocation location;

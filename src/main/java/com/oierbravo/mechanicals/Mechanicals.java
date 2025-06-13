@@ -28,7 +28,7 @@ import java.util.concurrent.CompletableFuture;
 public class Mechanicals {
 
     public static final String MODID = "mechanicals";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     public static final NonNullSupplier<Registrate> REGISTRATE = NonNullSupplier.lazy(
             () -> Registrate.create(MODID)
                     //.defaultCreativeTab(MechanicalCreativeModeTabs.MAIN_TAB.getKey())
@@ -65,6 +65,7 @@ public class Mechanicals {
                 .addRecipeRequirementMissing("biome", "Incorrect biome")
                 .addRecipeRequirementTitle("biome_tag", "Biome Tag:")
                 .addRecipeRequirementValue("biome_tag", "#%s")
+                .addRecipeRequirementMissing("biome_tag", "Incorrect biome")
                 .addRecipeRequirementTitle("min_y", "Min Y:")
                 .addRecipeRequirementValue("min_y", "%s")
                 .addRecipeRequirementMissing("min_y", "Y position Too low")

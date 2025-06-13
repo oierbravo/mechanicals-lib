@@ -13,6 +13,7 @@
   "mechanicals.ui.recipe_requirement.biome.tooltip.missing": "Неверный биом",
   "mechanicals.ui.recipe_requirement.biome.tooltip.title": "Биом:",
   "mechanicals.ui.recipe_requirement.biome.tooltip.value": "%s",
+  "mechanicals.ui.recipe_requirement.biome_tag.tooltip.missing": "Неверный биом",
   "mechanicals.ui.recipe_requirement.biome_tag.tooltip.title": "Тег биома:",
   "mechanicals.ui.recipe_requirement.biome_tag.tooltip.value": "#%s",
   "mechanicals.ui.recipe_requirement.ingredients.tooltip.missing": "Отсутствуют ингредиенты",

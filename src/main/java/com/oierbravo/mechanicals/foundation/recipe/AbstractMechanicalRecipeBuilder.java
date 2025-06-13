@@ -33,7 +33,10 @@ public abstract class AbstractMechanicalRecipeBuilder<R extends AbstractMechanic
         return (BRB) this;
     }
     public BRB withRequirements(List<IRecipeRequirement> pRecipeRequirements) {
-        params.recipeRequirements.addAll(pRecipeRequirements);
+        pRecipeRequirements.forEach(iRecipeRequirement -> {
+            if(!params.recipeRequirements.contains(iRecipeRequirement))
+                params.recipeRequirements.add(iRecipeRequirement);
+        });
         return (BRB) this;
     }
 

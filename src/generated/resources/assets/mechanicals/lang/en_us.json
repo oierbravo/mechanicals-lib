@@ -7,6 +7,7 @@
   "mechanicals.ui.recipe_requirement.biome.tooltip.missing": "Incorrect biome",
   "mechanicals.ui.recipe_requirement.biome.tooltip.title": "Biome:",
   "mechanicals.ui.recipe_requirement.biome.tooltip.value": "%s",
+  "mechanicals.ui.recipe_requirement.biome_tag.tooltip.missing": "Incorrect biome",
   "mechanicals.ui.recipe_requirement.biome_tag.tooltip.title": "Biome Tag:",
   "mechanicals.ui.recipe_requirement.biome_tag.tooltip.value": "#%s",
   "mechanicals.ui.recipe_requirement.ingredients.tooltip.missing": "Missing ingredients",
