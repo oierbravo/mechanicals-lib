@@ -11,6 +11,8 @@ public enum CompatMods {
 	AE2("ae2"),
 	ARS_N("ars_nouveau"),
 	CFN("create_from_nothing"),
+	BR("bigreactors"),
+	FN("fluxnetworks"),
 	;
 
 	private final String id;
