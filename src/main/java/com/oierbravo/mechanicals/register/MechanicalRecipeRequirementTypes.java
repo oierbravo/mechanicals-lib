@@ -34,6 +34,18 @@ public class MechanicalRecipeRequirementTypes {
     public static final Supplier<RecipeRequirementType<BiomeTagRequirement>> BIOME_TAG =
             register(BiomeTagRequirement.ID, BiomeTagRequirement.CODEC, BiomeTagRequirement.STREAM_CODEC);
 
+    public static final Supplier<RecipeRequirementType<MinTemperatureRequirement>> MIN_TEMPERATURE =
+            register(MinTemperatureRequirement.ID, MinTemperatureRequirement.CODEC, MinTemperatureRequirement.STREAM_CODEC);
+
+    public static final Supplier<RecipeRequirementType<MaxTemperatureRequirement>> MAX_TEMPERATURE =
+            register(MaxTemperatureRequirement.ID, MaxTemperatureRequirement.CODEC, MaxTemperatureRequirement.STREAM_CODEC);
+
+    public static final Supplier<RecipeRequirementType<MinDownfallRequirement>> MIN_DOWNFALL =
+            register(MinDownfallRequirement.ID, MinDownfallRequirement.CODEC, MinDownfallRequirement.STREAM_CODEC);
+
+    public static final Supplier<RecipeRequirementType<MinDownfallRequirement>> MAX_DOWNFALL =
+            register(MinDownfallRequirement.ID, MinDownfallRequirement.CODEC, MinDownfallRequirement.STREAM_CODEC);
+
     public static void register(IEventBus modEventBus) {
         RECIPE_REQUIREMENT_TYPES.register(modEventBus);
     }
