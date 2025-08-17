@@ -43,8 +43,8 @@ public class MechanicalRecipeRequirementTypes {
     public static final Supplier<RecipeRequirementType<MinDownfallRequirement>> MIN_DOWNFALL =
             register(MinDownfallRequirement.ID, MinDownfallRequirement.CODEC, MinDownfallRequirement.STREAM_CODEC);
 
-    public static final Supplier<RecipeRequirementType<MinDownfallRequirement>> MAX_DOWNFALL =
-            register(MinDownfallRequirement.ID, MinDownfallRequirement.CODEC, MinDownfallRequirement.STREAM_CODEC);
+    public static final Supplier<RecipeRequirementType<MaxDownfallRequirement>> MAX_DOWNFALL =
+            register(MaxDownfallRequirement.ID, MaxDownfallRequirement.CODEC, MaxDownfallRequirement.STREAM_CODEC);
 
     public static void register(IEventBus modEventBus) {
         RECIPE_REQUIREMENT_TYPES.register(modEventBus);

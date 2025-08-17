@@ -2,24 +2,26 @@ package com.oierbravo.mechanicals.compat.kubejs;
 
 import com.oierbravo.mechanicals.compat.kubejs.bindings.BlockPredicateBuilder;
 import com.oierbravo.mechanicals.compat.kubejs.bindings.ProcessingOutputBuilder;
-import com.oierbravo.mechanicals.compat.kubejs.components.*;
 import com.oierbravo.mechanicals.compat.kubejs.bindings.RecipeRequirementBuilder;
+import com.oierbravo.mechanicals.compat.kubejs.components.*;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
-import dev.latvian.mods.kubejs.recipe.schema.RecipeComponentFactoryRegistry;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponentTypeRegistry;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
 import net.neoforged.fml.ModList;
 
 public class MechanicalsJsPlugin implements KubeJSPlugin {
 
+
     @Override
-    public void registerRecipeComponents(RecipeComponentFactoryRegistry registry) {
-        registry.register(ProcessingOutputComponent.OUTPUT);
+    public void registerRecipeComponents(RecipeComponentTypeRegistry registry) {
+
+        registry.register(ProcessingOutputComponent.PROCESSING_OUTPUT);
         registry.register(BlockPredicateComponent.BLOCK_PREDICATE);
         registry.register(RecipeRequirementsComponent.RECIPE_REQUIREMENT);
         registry.register(ResourceLocationComponent.RESOURCE_LOCATION);
         registry.register(CreateFluidIngredientComponent.FLUID_INGREDIENT);
         registry.register(CountableIngredientComponent.COUNTABLE_INGREDIENT);
-        registry.register(CoupleBooleanComponent.BOOLEAN);
+        registry.register(CoupleBooleanComponent.COUPLE_BOOLEAN);
     }
 
     @Override

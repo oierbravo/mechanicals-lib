@@ -1,16 +1,23 @@
 package com.oierbravo.mechanicals.compat.kubejs.components;
 
 import com.mojang.serialization.Codec;
+import com.oierbravo.mechanicals.Mechanicals;
 import com.oierbravo.mechanicals.foundation.ingredient.CountableIngredient;
 import dev.latvian.mods.kubejs.recipe.KubeRecipe;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
 import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.type.TypeInfo;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public record CountableIngredientComponent() implements RecipeComponent<CountableIngredient> {
-    public static final RecipeComponent<CountableIngredient> COUNTABLE_INGREDIENT = new CountableIngredientComponent();
+    public static final RecipeComponentType<CountableIngredient> COUNTABLE_INGREDIENT = RecipeComponentType.unit(Mechanicals.asResource("countable_ingredient"),new CountableIngredientComponent());
+
+    @Override
+    public RecipeComponentType<?> type() {
+        return COUNTABLE_INGREDIENT;
+    }
 
     @Override
     public Codec<CountableIngredient> codec() {
@@ -30,5 +37,8 @@ public record CountableIngredientComponent() implements RecipeComponent<Countabl
             return CountableIngredient.of(itemStack);
         return RecipeComponent.super.wrap(cx, recipe, from);
     }
-
+    @Override
+    public String toString() {
+        return "mechanical_countable_ingredient";
+    }
 }

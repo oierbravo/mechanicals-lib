@@ -1,15 +1,23 @@
 package com.oierbravo.mechanicals.compat.kubejs.components;
 
 import com.mojang.serialization.Codec;
+import com.oierbravo.mechanicals.Mechanicals;
 import dev.latvian.mods.kubejs.recipe.KubeRecipe;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
 import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.NativeArray;
 import dev.latvian.mods.rhino.type.TypeInfo;
 import net.createmod.catnip.data.Couple;
 
 public class CoupleBooleanComponent  implements RecipeComponent<Couple<Boolean>> {
-    public static final RecipeComponent<Couple<Boolean>> BOOLEAN = new CoupleBooleanComponent();
+    public static final RecipeComponentType<Couple<Boolean>> COUPLE_BOOLEAN = RecipeComponentType.unit(Mechanicals.asResource("couple_boolean"),new CoupleBooleanComponent());
+
+    @Override
+    public RecipeComponentType<?> type() {
+        return COUPLE_BOOLEAN;
+    }
+
 
     @Override
     public Codec<Couple<Boolean>> codec() {
@@ -33,5 +41,9 @@ public class CoupleBooleanComponent  implements RecipeComponent<Couple<Boolean>>
         }
 
         return Couple.create(false,false);
+    }
+    @Override
+    public String toString() {
+        return "mechanical_couple_boolean";
     }
 }

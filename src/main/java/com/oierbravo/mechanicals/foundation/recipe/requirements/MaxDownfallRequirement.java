@@ -15,7 +15,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public record MaxDownfallRequirement(Float downfall) implements IRecipeRequirement {
-    public static String ID = "max_temperature";
+    public static String ID = "max_downfall";
     public static MapCodec<MaxDownfallRequirement> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(Codec.FLOAT.optionalFieldOf("value", null).forGetter(MaxDownfallRequirement::downfall)).apply(builder, MaxDownfallRequirement::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, MaxDownfallRequirement> STREAM_CODEC = StreamCodec.composite(
