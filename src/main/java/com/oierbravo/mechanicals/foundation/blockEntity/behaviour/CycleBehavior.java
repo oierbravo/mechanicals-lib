@@ -73,6 +73,18 @@ public class CycleBehavior extends BlockEntityBehaviour {
 		numCycles = specifics.getCycles();
 		blockEntity.sendData();
 	}
+    public void stop() {
+        running = false;
+        finished = false;
+        prevRunningTicks = 0;
+        runningTicks = 0;
+        currentCycle = 0;
+        actuatedTimes = 0;
+        actuatedInCurrentCycle = false;
+        numCycles = specifics.getCycles();
+        blockEntity.sendData();
+    }
+
 	public void restartCycle() {
 		running = true;
 		finished = false;
@@ -103,7 +115,6 @@ public class CycleBehavior extends BlockEntityBehaviour {
 			return;
 		}
 
-
 		if (level.isClientSide && runningTicks == -cycleTime) {
 			prevRunningTicks = cycleTime;
 			return;
@@ -131,6 +142,10 @@ public class CycleBehavior extends BlockEntityBehaviour {
 				specifics.onOperationCompletd();
 				specifics.playCompletionSound();
 			} else {
+                if (!specifics.tryProcess( true)){
+                    stop();
+                    return;
+                }
 				restartCycle();
 			}
 			blockEntity.sendData();
