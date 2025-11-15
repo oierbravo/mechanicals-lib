@@ -1,10 +1,8 @@
 package com.oierbravo.mechanicals.utility;
 
 import com.oierbravo.mechanicals.Mechanicals;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -41,20 +39,5 @@ public class MechanicalConfigUtils {
             outputFluid = new FluidStack(BuiltInRegistries.FLUID.get(ResourceLocation.parse(defaultValue)),configAmount);
         }
         return outputFluid;
-    }
-    public static FluidIngredient readFluidIngredient(String configValue,int configAmount,FluidIngredient defaultValue){
-        FluidIngredient fluidIngredient = FluidIngredient.EMPTY;
-        if(configValue.startsWith("#")){
-            ResourceLocation fluidTag = ResourceLocation.tryParse(configValue.replace("#",""));
-            assert fluidTag != null;
-            return FluidIngredient.fromTag(FluidTags.create(fluidTag),configAmount);
-        }
-        final ResourceLocation desiredFluid = ResourceLocation.parse(configValue);
-
-        if (BuiltInRegistries.FLUID.containsKey(desiredFluid)) {
-            return FluidIngredient.fromFluid(BuiltInRegistries.FLUID.get(desiredFluid), configAmount);
-        }
-        Mechanicals.LOGGER.error("Unknown fluid '{}' in config, using default '{}' instead", configValue, defaultValue.toString());
-        return defaultValue;
     }
 }
