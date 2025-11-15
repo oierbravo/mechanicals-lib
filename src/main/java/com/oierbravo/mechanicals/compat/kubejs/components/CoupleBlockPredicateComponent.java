@@ -2,10 +2,9 @@ package com.oierbravo.mechanicals.compat.kubejs.components;
 
 import com.mojang.serialization.Codec;
 import com.oierbravo.mechanicals.Mechanicals;
-import dev.latvian.mods.kubejs.recipe.KubeRecipe;
+import dev.latvian.mods.kubejs.recipe.RecipeScriptContext;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
-import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.NativeArray;
 import dev.latvian.mods.rhino.type.TypeInfo;
 import net.createmod.catnip.data.Couple;
@@ -30,8 +29,9 @@ public record CoupleBlockPredicateComponent() implements RecipeComponent<Couple<
         return TypeInfo.of(Couple.class);
     }
 
+
     @Override
-    public Couple<BlockPredicate> wrap(Context cx, KubeRecipe recipe, Object from) {
+    public Couple<BlockPredicate> wrap(RecipeScriptContext cx, Object from) {
         if(from instanceof NativeArray nativeArray){
             return Couple.create(
                     (BlockPredicate) nativeArray.getFirst(),
