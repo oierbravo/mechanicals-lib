@@ -5,7 +5,10 @@ import com.oierbravo.mechanicals.utility.LibLang;
 import com.oierbravo.mechanicals.utility.MechanicalLangIdGenerator;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -17,8 +20,14 @@ public class MechanicalCreativeModeTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = TAB_REGISTER.register("main",
             () -> CreativeModeTab.builder()
                     .title(LibLang.translate(MechanicalLangIdGenerator.creativeTabId("main")).component())
-                    .icon(MechanicalsCreateItems.RARE_OIERBRAVO_PACKAGE::asStack)
+                    .icon(MechanicalCreativeModeTabs::tabIcon)
                     .build());
+
+    private static ItemStack tabIcon() {
+        if (ModList.get().isLoaded("create"))
+            return MechanicalsCreateItems.RARE_OIERBRAVO_PACKAGE.asStack();
+        return new ItemStack(Items.APPLE);
+    }
 
     public static CreativeModeTab getBaseTab() {
         return MAIN_TAB.get();

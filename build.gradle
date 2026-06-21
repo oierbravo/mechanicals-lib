@@ -158,8 +158,13 @@ dependencies {
 
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
     jarJar(implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"))
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
-    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    compileOnlyApi("dev.engine-room.flywheel:flywheel-neoforge-api-$minecraft_version:$flywheel_version")
+    jarJar(runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-$minecraft_version:$flywheel_version") {
+        version {
+            strictly "[${flywheel_version},2.0)"
+            prefer flywheel_version
+        }
+    })
     jarJar(implementation("com.tterrag.registrate:Registrate:${registrate_version}"))
 
     implementation("mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}")

@@ -1,6 +1,7 @@
 package com.oierbravo.mechanicals;
 
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -13,6 +14,7 @@ public class MechanicalsClient {
         modEventBus.addListener(MechanicalsClient::clientInit);
     }
     public static void clientInit(final FMLClientSetupEvent event) {
-        MechanicalPartials.init();
+        if (ModList.get().isLoaded("create"))
+            MechanicalPartials.init();
     }
 }
