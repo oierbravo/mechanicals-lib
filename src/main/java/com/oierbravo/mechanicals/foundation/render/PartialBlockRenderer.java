@@ -19,6 +19,7 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,8 @@ import java.util.Map;
  * the renderer places the moving cap and crops the UV itself, so the crop is independent of the region's
  * absolute size. The leading cap is always drawn full-sprite; only the four side faces honour the crop mode.
  *
- * <p>The chosen sprite / render type / tint index are resolved once per {@link BlockState} and cached; the
+ * <p>The model's layers (one sprite / render type / tint index per render type) are resolved once per
+ * {@link BlockState} and cached, so multi-layer composite models keep every layer; the
  * cache holds baked {@link TextureAtlasSprite} references, so it MUST be cleared on resource reload (see
  * {@code ModClientReloadListeners}) or it will draw stale atlas UVs after an atlas re-stitch.
  *
@@ -90,13 +92,6 @@ public final class PartialBlockRenderer {
             return;
 
         CachedFace face = faceFor(state);
-        VertexConsumer vc = buffers.getBuffer(face.renderType);
-        TextureAtlasSprite sprite = face.sprite;
-
-        int color = 0xFFFFFF;
-        if (face.tintIndex >= 0)
-            color = Minecraft.getInstance().getBlockColors().getColor(state, level, pos, face.tintIndex);
-        int r = (color >> 16) & 0xFF, g = (color >> 8) & 0xFF, b = color & 0xFF;
 
         Direction.Axis fa = fillDir.getAxis();
         boolean positive = fillDir.getAxisDirection() == Direction.AxisDirection.POSITIVE;
@@ -116,35 +111,47 @@ public final class PartialBlockRenderer {
         }
 
         PoseStack.Pose pose = ms.last();
-        float u0 = sprite.getU0(), u1 = sprite.getU1(), v0 = sprite.getV0(), v1 = sprite.getV1();
 
-        for (Direction dir : Direction.values()) {
-            if (dir == fillDir.getOpposite() && skipTrailingCap)
-                continue;
+        // One box per model layer, back-to-front in resolve order (base then translucent overlay).
+        for (Layer layer : face.layers) {
+            VertexConsumer vc = buffers.getBuffer(layer.renderType);
+            TextureAtlasSprite sprite = layer.sprite;
 
-            boolean cap = dir.getAxis() == fa;
-            double[][] c = faceCorners(dir, bx0, by0, bz0, bx1, by1, bz1);
-            float[][] uv = new float[4][2];
+            int color = 0xFFFFFF;
+            if (layer.tintIndex >= 0)
+                color = Minecraft.getInstance().getBlockColors().getColor(state, level, pos, layer.tintIndex);
+            int r = (color >> 16) & 0xFF, g = (color >> 8) & 0xFF, b = color & 0xFF;
 
-            for (int i = 0; i < 4; i++) {
-                double cx = c[i][0], cy = c[i][1], cz = c[i][2];
-                if (cap) {
-                    // Full sprite: the two cross axes map straight to u and v.
-                    Direction.Axis a0 = lowerCrossAxis(fa), a1 = upperCrossAxis(fa);
-                    float s0 = norm(coord(cx, cy, cz, a0), minOn(region, a0), maxOn(region, a0));
-                    float s1 = norm(coord(cx, cy, cz, a1), minOn(region, a1), maxOn(region, a1));
-                    uv[i][0] = lerp(u0, u1, s0);
-                    uv[i][1] = lerp(v0, v1, s1);
-                } else {
-                    // Side face: cross axis fills u, fill axis drives the cropped v.
-                    Direction.Axis cross = thirdAxis(fa, dir.getAxis());
-                    float s = norm(coord(cx, cy, cz, cross), minOn(region, cross), maxOn(region, cross));
-                    float t = (float) ((coord(cx, cy, cz, fa) - trailing) / (leading - trailing));
-                    uv[i][0] = lerp(u0, u1, s);
-                    uv[i][1] = sideV(t, f, v0, v1);
+            float u0 = sprite.getU0(), u1 = sprite.getU1(), v0 = sprite.getV0(), v1 = sprite.getV1();
+
+            for (Direction dir : Direction.values()) {
+                if (dir == fillDir.getOpposite() && skipTrailingCap)
+                    continue;
+
+                boolean cap = dir.getAxis() == fa;
+                double[][] c = faceCorners(dir, bx0, by0, bz0, bx1, by1, bz1);
+                float[][] uv = new float[4][2];
+
+                for (int i = 0; i < 4; i++) {
+                    double cx = c[i][0], cy = c[i][1], cz = c[i][2];
+                    if (cap) {
+                        // Full sprite: the two cross axes map straight to u and v.
+                        Direction.Axis a0 = lowerCrossAxis(fa), a1 = upperCrossAxis(fa);
+                        float s0 = norm(coord(cx, cy, cz, a0), minOn(region, a0), maxOn(region, a0));
+                        float s1 = norm(coord(cx, cy, cz, a1), minOn(region, a1), maxOn(region, a1));
+                        uv[i][0] = lerp(u0, u1, s0);
+                        uv[i][1] = lerp(v0, v1, s1);
+                    } else {
+                        // Side face: cross axis fills u, fill axis drives the cropped v.
+                        Direction.Axis cross = thirdAxis(fa, dir.getAxis());
+                        float s = norm(coord(cx, cy, cz, cross), minOn(region, cross), maxOn(region, cross));
+                        float t = (float) ((coord(cx, cy, cz, fa) - trailing) / (leading - trailing));
+                        uv[i][0] = lerp(u0, u1, s);
+                        uv[i][1] = sideV(t, f, v0, v1);
+                    }
                 }
+                emitQuad(vc, pose, r, g, b, shadeFor(dir), light, dir, c, uv);
             }
-            emitQuad(vc, pose, r, g, b, shadeFor(dir), light, dir, c, uv);
         }
     }
 
@@ -240,26 +247,29 @@ public final class PartialBlockRenderer {
     private static CachedFace resolve(BlockState state) {
         BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
 
-        TextureAtlasSprite sprite = null;
-        int tintIndex = -1;
-        List<BakedQuad> quads = model.getQuads(state, Direction.UP, RANDOM);
-        if (quads.isEmpty())
-            quads = model.getQuads(state, null, RANDOM);
-        if (!quads.isEmpty()) {
+        // One layer per render type so composite / multi-layer models (e.g. Ex Deorum compressed
+        // blocks: opaque base + translucent overlay) keep every layer instead of collapsing to one.
+        List<Layer> layers = new ArrayList<>();
+        for (RenderType renderType : model.getRenderTypes(state, RANDOM, ModelData.EMPTY)) {
+            List<BakedQuad> quads = model.getQuads(state, Direction.UP, RANDOM, ModelData.EMPTY, renderType);
+            if (quads.isEmpty())
+                quads = model.getQuads(state, null, RANDOM, ModelData.EMPTY, renderType);
+            if (quads.isEmpty())
+                continue;
             BakedQuad quad = quads.get(0);
-            sprite = quad.getSprite();
-            tintIndex = quad.getTintIndex();
+            layers.add(new Layer(quad.getSprite(), renderType, quad.getTintIndex()));
         }
-        if (sprite == null)
-            sprite = model.getParticleIcon(ModelData.EMPTY);
 
-        RenderType renderType = model.getRenderTypes(state, RANDOM, ModelData.EMPTY).asList().stream()
-                .findFirst().orElse(RenderType.solid());
+        // Fallback: no render types / empty quads — draw the particle icon as a single solid layer.
+        if (layers.isEmpty())
+            layers.add(new Layer(model.getParticleIcon(ModelData.EMPTY), RenderType.solid(), -1));
 
-        return new CachedFace(sprite, renderType, tintIndex);
+        return new CachedFace(layers);
     }
 
-    private record CachedFace(TextureAtlasSprite sprite, RenderType renderType, int tintIndex) {}
+    private record Layer(TextureAtlasSprite sprite, RenderType renderType, int tintIndex) {}
+
+    private record CachedFace(List<Layer> layers) {}
 
     public static final class Builder {
         private Direction fillDir = Direction.UP;
