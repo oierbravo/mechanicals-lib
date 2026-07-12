@@ -16,10 +16,17 @@ public class RegistrateLangBuilder<R extends AbstractRegistrate<?>> {
         return this;
     }
     public RegistrateLangBuilder<R> addCreativeTab(String defaultTranslation){
-        return add(MechanicalLangIdGenerator.creativeTabId( "main"), defaultTranslation);
+        return addCreativeTab("main",defaultTranslation);
+    }
+    public RegistrateLangBuilder<R> addCreativeTab(String variant, String defaultTranslation){
+        return add(LangIdGenerator.creativeTab(variant), defaultTranslation);
     }
     public RegistrateLangBuilder<R> addJade(String defaultTranslation){
-        registrate.addRawLang(MechanicalLangIdGenerator.jadeId(namespace),defaultTranslation);
+        registrate.addRawLang(LangIdGenerator.jade(namespace),defaultTranslation);
+        return this;
+    }
+    public RegistrateLangBuilder<R> addJade(String variant, String defaultTranslation){
+        registrate.addRawLang(LangIdGenerator.jade(namespace, variant), defaultTranslation);
         return this;
     }
     public RegistrateLangBuilder<R> addRaw(String literal, String defaultTranslation){
@@ -28,7 +35,7 @@ public class RegistrateLangBuilder<R extends AbstractRegistrate<?>> {
     }
 
     protected RegistrateLangBuilder<R> addRecipeRequirement(String variant, String id, String defaultTranslation){
-        registrate.addRawLang("mechanicals." + MechanicalLangIdGenerator.recipeRequirement(id, variant),defaultTranslation);
+        registrate.addRawLang("mechanicals." + LangIdGenerator.recipeRequirement(id, variant),defaultTranslation);
         return this;
     }
     public RegistrateLangBuilder<R> addRecipeRequirementTitle(String id, String defaultTranslation){

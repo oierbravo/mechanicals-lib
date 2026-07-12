@@ -1,7 +1,7 @@
 package com.oierbravo.mechanicals.utility.lang;
 
 
-import com.oierbravo.mechanicals.utility.MechanicalLangIdGenerator;
+import com.oierbravo.mechanicals.utility.LangIdGenerator;
 import com.tterrag.registrate.AbstractRegistrate;
 
 import java.util.function.Supplier;
@@ -21,10 +21,10 @@ public class MechanicalRegistrateLangBuilder<R extends AbstractRegistrate<?>> {
         return addRawLang(literal,defaultTranslation);
     }
     public MechanicalLangBuilder addCreativeTab(String defaultTranslation){
-        return add(MechanicalLangIdGenerator.creativeTabId( "main"), defaultTranslation);
+        return add(LangIdGenerator.creativeTab( "main"), defaultTranslation);
     }
     public MechanicalLangBuilder addJade(String defaultTranslation){
-        String key = MechanicalLangIdGenerator.jadeId(namespace);
+        String key = LangIdGenerator.jade(namespace);
         registrate.addRawLang(key,defaultTranslation);
         return langBuilderSupplier.get().key(key);
     }
@@ -34,7 +34,7 @@ public class MechanicalRegistrateLangBuilder<R extends AbstractRegistrate<?>> {
     }
 
     protected MechanicalLangBuilder addRecipeRequirement(String variant, String id, String defaultTranslation){
-        String key = "mechanicals." + MechanicalLangIdGenerator.recipeRequirement(id, variant);
+        String key = "mechanicals." + LangIdGenerator.recipeRequirement(id, variant);
         registrate.addRawLang(key,defaultTranslation);
         return langBuilderSupplier.get().key(key);
     }
